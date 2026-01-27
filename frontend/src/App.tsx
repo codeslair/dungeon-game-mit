@@ -45,6 +45,16 @@ function App() {
     }
   }, [account, web3, chainId, loadAccountBalance]);
 
+  const getNetworkName = useCallback((id: number): string => {
+    const networks: { [key: number]: string } = {
+      1: 'Ethereum Mainnet',
+      5: 'Goerli Testnet',
+      11155111: 'Sepolia Testnet',
+      31337: 'Hardhat Local',
+    };
+    return networks[id] || `Network ${id}`;
+  }, []);
+
   const handleConnect = useCallback((accountAddress: string, web3Instance: Web3, chainIdNum: number) => {
     setAccount(accountAddress);
     setWeb3(web3Instance);
@@ -52,7 +62,7 @@ function App() {
     setErrorMessage('');
     
     addNotification(`Connected to ${getNetworkName(chainIdNum)}`, 'success');
-  }, [addNotification]);
+  }, [addNotification, getNetworkName]);
 
   const handleDisconnect = useCallback(() => {
     setAccount('');
@@ -66,16 +76,6 @@ function App() {
   const handleNotification = useCallback((message: string, type: 'success' | 'error' | 'warning' | 'info') => {
     addNotification(message, type);
   }, [addNotification]);
-
-  const getNetworkName = useCallback((id: number): string => {
-    const networks: { [key: number]: string } = {
-      1: 'Ethereum Mainnet',
-      5: 'Goerli Testnet',
-      11155111: 'Sepolia Testnet',
-      31337: 'Hardhat Local',
-    };
-    return networks[id] || `Network ${id}`;
-  }, []);
 
   const switchToSepolia = useCallback(async () => {
     if (!window.ethereum) return;
