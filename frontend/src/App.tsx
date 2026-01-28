@@ -121,11 +121,29 @@ function App() {
           <h1>🏰 Dungeon Game</h1>
           <p className="subtitle">Blockchain Gaming Platform</p>
         </div>
-        <WalletConnect 
-          onConnect={handleConnect}
-          onDisconnect={handleDisconnect}
-          onNotification={handleNotification}
-        />
+        <div className="header-right">
+          {account && (
+            <div className="connection-info">
+              <div className="info-item">
+                <span className="info-label">Account:</span>
+                <span className="info-value">{account.substring(0, 6)}...{account.substring(account.length - 4)}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Network:</span>
+                <span className="info-value">{getNetworkName(chainId)}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Balance:</span>
+                <span className="info-value">{balance} ETH</span>
+              </div>
+            </div>
+          )}
+          <WalletConnect 
+            onConnect={handleConnect}
+            onDisconnect={handleDisconnect}
+            onNotification={handleNotification}
+          />
+        </div>
       </header>
 
       <main className="app-main">
@@ -143,37 +161,6 @@ function App() {
         )}
 
         <div className="dashboard">
-          <div className="status-card">
-            <h2>Connection Status</h2>
-            <div className={`status ${account ? 'connected' : 'disconnected'}`}>
-              {account ? '🟢 Connected' : '🔴 Disconnected'}
-            </div>
-            
-            {account && (
-              <div className="account-info">
-                <div className="info-row">
-                  <span className="label">Account:</span>
-                  <span className="value">{account.substring(0, 10)}...{account.substring(account.length - 8)}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Network:</span>
-                  <span className="value network-name">
-                    {getNetworkName(chainId)}
-                    {isWrongNetwork && chainId !== 0 && (
-                      <button className="switch-network-btn" onClick={switchToSepolia}>
-                        Switch to Sepolia
-                      </button>
-                    )}
-                  </span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Balance:</span>
-                  <span className="value">{balance} ETH</span>
-                </div>
-              </div>
-            )}
-          </div>
-
           <div className="content-section">
             <h2>Welcome to Dungeon Game</h2>
             <p className="description">

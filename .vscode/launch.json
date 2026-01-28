@@ -2,11 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug React App",
-      "type": "chrome",
+      "name": "Launch Edge with MetaMask",
       "request": "launch",
+      "type": "msedge",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/src"
+      "webRoot": "${workspaceFolder}",
+      "userDataDir": "C:/Users/Mark.Amena/AppData/Local/Microsoft/Edge/User Data/Profile 1"
     }
   ]
 }

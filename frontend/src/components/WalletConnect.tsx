@@ -155,46 +155,26 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
   };
 
-  const getNetworkColor = () => {
-    if (chainId === 11155111) return '#8a2be2'; // Sepolia purple
-    if (chainId === 1) return '#627eea'; // Ethereum blue
-    if (chainId === 137) return '#8247e5'; // Polygon purple
-    return '#666'; // Default gray
+  const getNetworkColorClass = () => {
+    if (chainId === 11155111) return 'network-badge-sepolia';
+    if (chainId === 1) return 'network-badge-ethereum';
+    if (chainId === 137) return 'network-badge-polygon';
+    return 'network-badge-default';
   };
 
   return (
     <div className="wallet-connect">
-      {!account ? (
-        <button 
-          className="connect-button"
-          onClick={connectWallet}
-          disabled={isConnecting}
-        >
-          {isConnecting ? (
-            <span className="connecting-spinner">Connecting...</span>
-          ) : (
-            'Connect Wallet'
-          )}
-        </button>
-      ) : (
-        <div className="wallet-info">
-          <div 
-            className="network-badge"
-            style={{ backgroundColor: getNetworkColor() }}
-          >
-            {network}
-          </div>
-          <div className="account-display">
-            <span className="account-address">{formatAddress(account)}</span>
-            <button 
-              className="disconnect-button"
-              onClick={disconnectWallet}
-            >
-              Disconnect
-            </button>
-          </div>
-        </div>
-      )}
+      <button 
+        className={`${account ? 'disconnect-button' : 'connect-button'}`}
+        onClick={account ? disconnectWallet : connectWallet}
+        disabled={isConnecting}
+      >
+        {isConnecting ? (
+          <span className="connecting-spinner">Connecting...</span>
+        ) : (
+          account ? 'Disconnect' : 'Connect Wallet'
+        )}
+      </button>
     </div>
   );
 };

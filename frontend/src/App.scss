@@ -48,6 +48,7 @@ body {
     align-items: center;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 2rem;
     
     .logo {
       h1 {
@@ -62,6 +63,63 @@ body {
         color: $gray-color;
         font-size: 0.9rem;
         font-weight: 500;
+      }
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-left: auto;
+    }
+    
+    .connection-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: rgba($light-color, 0.6);
+      padding: 0.75rem 1.25rem;
+      border-radius: $border-radius-sm;
+      border: 1px solid rgba($primary-color, 0.15);
+      
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        .info-label {
+          color: $gray-color;
+          font-size: 0.85rem;
+          font-weight: 500;
+        }
+        
+        .info-value {
+          color: $dark-color;
+          font-weight: 600;
+          font-size: 0.9rem;
+          font-family: 'Roboto Mono', monospace;
+        }
+      }
+      
+      @media (max-width: 1024px) {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.5rem 1rem;
+      }
+      
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+      
+      .header-right {
+        width: 100%;
+        flex-direction: column;
       }
     }
   }
@@ -108,124 +166,108 @@ body {
 
 // Wallet Connect Component
 .wallet-connect {
-  .connect-button {
-    background: linear-gradient(135deg, $primary-color, $primary-dark);
-    color: white;
-    border: none;
+  button {
     padding: 0.875rem 1.75rem;
     border-radius: $border-radius-sm;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: $transition;
-    box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+    border: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba($primary-color, 0.4);
-      background: linear-gradient(135deg, $primary-dark, darken($primary-dark, 5%));
-    }
     
     &:disabled {
       opacity: 0.7;
       cursor: not-allowed;
       transform: none;
     }
+  }
+  
+  .connect-button {
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    color: white;
+    box-shadow: 0 4px 15px rgba($primary-color, 0.3);
     
-    .connecting-spinner {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      
-      &::after {
-        content: '';
-        width: 12px;
-        height: 12px;
-        border: 2px solid white;
-        border-radius: 50%;
-        border-top-color: transparent;
-        animation: spin 1s linear infinite;
-      }
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.4);
+      background: linear-gradient(135deg, $primary-dark, darken($primary-dark, 5%));
     }
   }
   
-  .wallet-info {
+  .disconnect-button {
+    background: $error-color;
+    color: white;
+    box-shadow: 0 4px 15px rgba($error-color, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($error-color, 0.4);
+      background: darken($error-color, 5%);
+    }
+  }
+  
+  .connecting-spinner {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
     
-    @media (max-width: 640px) {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
+    &::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border: 2px solid white;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
     }
-    
-    .network-badge {
-      background: $success-color;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      box-shadow: 0 2px 8px rgba($success-color, 0.3);
-      transition: $transition;
-      
-      &:hover {
-        transform: translateY(-1px);
-      }
-    }
-    
-    .account-display {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: rgba($light-color, 0.8);
-      padding: 0.5rem 1rem;
-      border-radius: $border-radius-sm;
-      border: 1px solid rgba($primary-color, 0.2);
-      
-      .account-address {
-        font-family: 'Roboto Mono', monospace;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: $dark-color;
-        padding: 0.25rem 0.5rem;
-        background: white;
-        border-radius: 4px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-      }
-      
-      .disconnect-button {
-        background: rgba($error-color, 0.1);
-        color: $error-color;
-        border: 1px solid $error-color;
-        padding: 0.5rem 1rem;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: $transition;
-        
-        &:hover {
-          background: $error-color;
-          color: white;
-          transform: translateY(-1px);
-        }
-      }
-    }
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 }
 
-// Error Box Component
+// Network Badge Styles
+.network-badge {
+  background: $success-color;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba($success-color, 0.3);
+  transition: $transition;
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+  
+  &-ethereum {
+    background: #627eea;
+    box-shadow: 0 2px 8px rgba(98, 126, 234, 0.3);
+  }
+  
+  &-sepolia {
+    background: #f59e0b;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+  }
+  
+  &-polygon {
+    background: #8247e5;
+    box-shadow: 0 2px 8px rgba(130, 71, 229, 0.3);
+  }
+  
+  &-default {
+    background: $gray-color;
+    box-shadow: 0 2px 8px rgba($gray-color, 0.3);
+  }
+}
+
+// Error Box Component// Error Box Component
 .error-box {
   position: fixed;
   bottom: 2rem;
@@ -335,105 +377,45 @@ body {
 
 // Dashboard
 .dashboard {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
   margin-top: 2rem;
-  
-  @media (min-width: 1024px) {
-    grid-template-columns: 350px 1fr;
-  }
 }
 
-.status-card {
+.content-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  padding: 2rem;
+  padding: 3rem;
   border-radius: $border-radius;
   box-shadow: $box-shadow;
   border: 1px solid rgba(255, 255, 255, 0.2);
   
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
+  
   h2 {
     color: $primary-color;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    
-    &.connected {
-      background: rgba($success-color, 0.1);
-      color: $success-color;
-      border: 2px solid $success-color;
-    }
-    
-    &.disconnected {
-      background: rgba($error-color, 0.1);
-      color: $error-color;
-      border: 2px solid $error-color;
-    }
-  }
-  
-  .account-info {
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      
-      &:last-child {
-        border-bottom: none;
-      }
-      
-      .label {
-        color: $gray-color;
-        font-weight: 500;
-        font-size: 0.9rem;
-      }
-      
-      .value {
-        font-weight: 600;
-        color: $dark-color;
-        font-family: 'Roboto Mono', monospace;
-        font-size: 0.9rem;
-        
-        &.network-name {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          
-          .switch-network-btn {
-            background: $warning-color;
-            color: $dark-color;
-            border: none;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: $transition;
-            
-            &:hover {
-              background: darken($warning-color, 10%);
-              transform: translateY(-1px);
-            }
-          }
-        }
-      }
-    }
+  .description {
+    color: $gray-color;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+    max-width: 600px;
   }
 }
 
+// Content Section
 .content-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -460,50 +442,71 @@ body {
 // Features Grid
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
   
   .feature-card {
     background: white;
-    padding: 1.75rem;
-    border-radius: $border-radius-sm;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba($primary-color, 0.1);
     transition: $transition;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, $primary-color, $accent-color);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+    }
     
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: $box-shadow-hover;
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba($primary-color, 0.15);
       border-color: $primary-color;
+      
+      &::before {
+        transform: scaleX(1);
+      }
     }
     
     .feature-icon {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 1rem;
+      display: block;
     }
     
     h3 {
-      color: $dark-color;
+      color: $primary-color;
       margin-bottom: 0.75rem;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 600;
     }
     
     p {
       color: $gray-color;
       font-size: 0.95rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
   }
 }
 
 // Instructions
 .instructions {
-  background: linear-gradient(135deg, rgba($primary-color, 0.05), rgba($accent-color, 0.05));
-  padding: 2rem;
-  border-radius: $border-radius-sm;
-  margin-top: 2.5rem;
+  background: linear-gradient(135deg, rgba($primary-color, 0.08), rgba($accent-color, 0.08));
+  padding: 2.5rem;
+  border-radius: $border-radius;
+  margin-top: 3rem;
+  border: 1px solid rgba($primary-color, 0.15);
   
   h3 {
     color: $primary-color;
@@ -526,11 +529,12 @@ body {
   
   .cta-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
+    margin-top: 2rem;
     
     .cta-button {
-      padding: 0.875rem 1.75rem;
+      padding: 1rem 2rem;
       border-radius: $border-radius-sm;
       font-weight: 600;
       text-decoration: none;
@@ -539,6 +543,8 @@ body {
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
       
       &.primary {
         background: linear-gradient(135deg, $primary-color, $primary-dark);
@@ -546,8 +552,8 @@ body {
         box-shadow: 0 4px 15px rgba($primary-color, 0.3);
         
         &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba($primary-color, 0.4);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 25px rgba($primary-color, 0.4);
         }
       }
       
@@ -559,7 +565,8 @@ body {
         &:hover {
           background: $primary-color;
           color: white;
-          transform: translateY(-2px);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 25px rgba($primary-color, 0.3);
         }
       }
     }
