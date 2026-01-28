@@ -50,6 +50,7 @@ export interface DungeonTokenInterface extends Interface {
       | "craftRareSword"
       | "getInventory"
       | "hasClaimedStarterPack"
+      | "hasCraftedLegendary"
       | "isApprovedForAll"
       | "lastTimeRewardClaim"
       | "mintEnergy"
@@ -166,6 +167,10 @@ export interface DungeonTokenInterface extends Interface {
   encodeFunctionData(
     functionFragment: "hasClaimedStarterPack",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hasCraftedLegendary",
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
@@ -296,6 +301,10 @@ export interface DungeonTokenInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "hasClaimedStarterPack",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "hasCraftedLegendary",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -616,6 +625,12 @@ export interface DungeonToken extends BaseContract {
     "view"
   >;
 
+  hasCraftedLegendary: TypedContractMethod<
+    [arg0: AddressLike, arg1: BigNumberish],
+    [boolean],
+    "view"
+  >;
+
   isApprovedForAll: TypedContractMethod<
     [account: AddressLike, operator: AddressLike],
     [boolean],
@@ -794,6 +809,13 @@ export interface DungeonToken extends BaseContract {
   getFunction(
     nameOrSignature: "hasClaimedStarterPack"
   ): TypedContractMethod<[arg0: AddressLike], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "hasCraftedLegendary"
+  ): TypedContractMethod<
+    [arg0: AddressLike, arg1: BigNumberish],
+    [boolean],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "isApprovedForAll"
   ): TypedContractMethod<

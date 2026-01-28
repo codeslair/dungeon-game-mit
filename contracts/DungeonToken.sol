@@ -29,6 +29,9 @@ contract DungeonToken is ERC1155, Ownable {
     mapping(address => uint256) public lastTimeRewardClaim;
     uint256 public constant TIME_REWARD_COOLDOWN = 5 minutes;
     
+    // Tracking legendary sword crafting (one per variant per player)
+    mapping(address => mapping(uint256 => bool)) public hasCraftedLegendary;
+    
     // Events
     event StarterPackClaimed(address indexed player);
     event DungeonRun(address indexed player, uint256 lootId, uint256 amount);
@@ -147,11 +150,14 @@ contract DungeonToken is ERC1155, Ownable {
         emit ItemCrafted(msg.sender, EPIC_SWORD, 1);
     }
     
-    // Craft Legendary Sword: 5 Epic Swords + 1000 Gold -> 1 Legendary Sword
+    // Craft Legendary Sword: 5 Epic Swords + 1000 Gold -> 1 Legendary Sword (limit 1 per variant per player)
     function craftLegendarySword(uint256 legendaryId) external {
         require(legendaryId >= LEGENDARY_SWORD_1 && legendaryId <= LEGENDARY_SWORD_5, "Invalid legendary ID");
+        require(!hasCraftedLegendary[msg.sender][legendaryId], "Already crafted this legendary variant");
         require(balanceOf(msg.sender, EPIC_SWORD) >= 5, "Insufficient Epic Swords");
         require(balanceOf(msg.sender, GOLD) >= 1000, "Insufficient Gold");
+        
+        hasCraftedLegendary[msg.sender][legendaryId] = true;
         
         _burn(msg.sender, EPIC_SWORD, 5);
         _burn(msg.sender, GOLD, 1000);

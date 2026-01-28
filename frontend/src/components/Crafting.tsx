@@ -21,6 +21,7 @@ interface DungeonContractMethod {
 interface DungeonContractInstance {
   methods: {
     balanceOf(address: string, tokenId: number): { call(): Promise<string> };
+    hasCraftedLegendary(address: string, tokenId: number): { call(): Promise<boolean> };
     craftRareSword(): DungeonContractMethod;
     craftEpicSword(): DungeonContractMethod;
     craftLegendarySword(legendaryId: number): DungeonContractMethod;
@@ -49,6 +50,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
     epic: 0,
     gold: 0,
   });
+  const [legendaryAlreadyCrafted, setLegendaryAlreadyCrafted] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (web3 && account && contractAddress && contractAddress !== '0x0000000000000000000000000000000000000000') {
@@ -77,6 +79,16 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
         epic: Number(epic),
         gold: Number(gold),
       });
+
+      // Check which legendary variants have been crafted
+      const craftedLegendaries = new Set<number>();
+      for (const legId of TOKEN_IDS.LEGENDARY_IDS) {
+        const hasCrafted = await contract.methods.hasCraftedLegendary(account, legId).call();
+        if (hasCrafted) {
+          craftedLegendaries.add(legId);
+        }
+      }
+      setLegendaryAlreadyCrafted(craftedLegendaries);
     } catch (error) {
       console.error('Error loading crafting balances:', error);
     }
@@ -136,6 +148,10 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
 
   const handleCraft = async () => {
     if (!contract || !account) return;
+    if (selectedRecipe === 'legendary' && legendaryAlreadyCrafted.has(legendaryId)) {
+      onNotification('You already crafted this legendary variant!', 'warning');
+      return;
+    }
     if (!canCraft) {
       onNotification('Insufficient materials for crafting', 'warning');
       return;
@@ -242,6 +258,9 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
           <ul>
             <li className={balances.epic >= 5 ? 'ok' : 'bad'}>{balances.epic >= 5 ? '✅' : '❌'} 5 Epic Swords</li>
             <li className={balances.gold >= 1000 ? 'ok' : 'bad'}>{balances.gold >= 1000 ? '✅' : '❌'} 1000 Gold</li>
+            {legendaryAlreadyCrafted.has(legendaryId) && (
+              <li className="bad">⚠️ Already crafted this variant</li>
+            )}
           </ul>
         )}
       </div>
@@ -250,7 +269,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
         <button
           className="craft-button"
           onClick={handleCraft}
-          disabled={isLoading || !canCraft}
+          disabled={isLoading || !canCraft || (selectedRecipe === 'legendary' && legendaryAlreadyCrafted.has(legendaryId))}
         >
           {isLoading ? 'Crafting...' : 'Craft'}
         </button>

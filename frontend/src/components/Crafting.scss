@@ -94,12 +94,19 @@
 
     select {
       flex: 1;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(26, 26, 46, 0.9);
+      border: 1px solid rgba(108, 92, 231, 0.5);
       color: #fff;
-      padding: 6px 8px;
+      padding: 8px 10px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      
+      option {
+        background: #1a1a2e;
+        color: #fff;
+      }
     }
   }
 

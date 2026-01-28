@@ -21,7 +21,7 @@ function App() {
   const [inventoryRefreshKey, setInventoryRefreshKey] = useState<number>(0);
   
   // Contract address - Deployed on Sepolia
-  const [contractAddress] = useState<string>('0x81eFAcc6f6a2c82819C0303f7e3EF1f3E250BF67');
+  const [contractAddress] = useState<string>('0x9eAD4A96C3cd8b5c0b9A41dF1F2C632Af5eCF1F7');
   
   // Use custom notification system
   const { addNotification, NotificationContainer } = useNotification();
