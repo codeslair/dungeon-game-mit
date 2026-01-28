@@ -284,30 +284,6 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
         <h2>Dungeon</h2>
       </div>
 
-      <div className="loot-chances">
-        <h3>Loot Chances:</h3>
-        <ul>
-          <li><span className="chance">70%</span> - Common Sword</li>
-          <li><span className="chance">20%</span> - Rare Sword</li>
-          <li><span className="chance">10%</span> - Epic Sword</li>
-        </ul>
-      </div>
-
-      <div className="loot-chances dungeon-cost-note">
-        <h3>Dungeon Cost:</h3>
-        <ul>
-          <li><span className="chance">Cost:</span> 1 Energy per run</li>
-        </ul>
-      </div>
-
-      <div className="loot-chances time-rewards-info">
-        <h3>Time Rewards (24h cooldown):</h3>
-        <ul>
-          <li><span className="chance">Gold:</span> 50-100 (random)</li>
-          <li><span className="chance">Energy:</span> 5-10 (random)</li>
-        </ul>
-      </div>
-
       {/* Time Rewards Timer Display */}
       {!canClaimTimeReward && (
         <div className="time-rewards-timer">
@@ -362,6 +338,30 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
         <button className="refresh-gas" onClick={updateGasEstimates} disabled={isLoading}>
           🔄
         </button>
+      </div>
+
+      <div className="loot-chances">
+        <h3>Loot Chances:</h3>
+        <ul>
+          <li><span className="chance">70%</span> - Common Sword</li>
+          <li><span className="chance">20%</span> - Rare Sword</li>
+          <li><span className="chance">10%</span> - Epic Sword</li>
+        </ul>
+      </div>
+
+      <div className="loot-chances dungeon-cost-note">
+        <h3>Dungeon Cost:</h3>
+        <ul>
+          <li><span className="chance">Cost:</span> 1 Energy per run</li>
+        </ul>
+      </div>
+
+      <div className="loot-chances time-rewards-info">
+        <h3>Time Rewards (24h cooldown):</h3>
+        <ul>
+          <li><span className="chance">Gold:</span> 50-100 (random)</li>
+          <li><span className="chance">Energy:</span> 5-10 (random)</li>
+        </ul>
       </div>
     </div>
   );
