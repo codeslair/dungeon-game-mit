@@ -137,7 +137,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="logo">
-          <h1>🏰 Dungeon Game</h1>
+          <h1>🏰 Dungeon Loot Game</h1>
           <p className="subtitle">Blockchain Gaming Platform</p>
         </div>
         <div className="header-right">
@@ -239,7 +239,7 @@ function App() {
         ) : (
           <div className="dashboard">
             <div className="content-section">
-              <h2>Welcome to Dungeon Game</h2>
+              <h2>Welcome to Dungeon Loot Game</h2>
               <p className="description">
                 This is a blockchain-based dungeon game where you can collect items, 
                 battle monsters, and earn rewards. Connect your wallet to get started!
@@ -304,7 +304,7 @@ function App() {
       </main>
 
       <footer className="app-footer">
-        <p>Dungeon Game © 2024 | Built with React, Hardhat & Web3.js</p>
+        <p>Dungeon Loot Game © 2026 | Built with React, Hardhat & Web3.js</p>
         <p className="footer-links">
           <a href="https://hardhat.org" target="_blank" rel="noopener noreferrer">Hardhat</a> • 
           <a href="https://web3js.org" target="_blank" rel="noopener noreferrer">Web3.js</a> • 

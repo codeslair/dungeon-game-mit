@@ -362,8 +362,8 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       <div className="loot-chances time-rewards-info">
         <h3>Time Rewards (5min cooldown):</h3>
         <ul>
-          <li><span className="chance">Gold:</span> 5-10 (random)</li>
           <li><span className="chance">Energy:</span> 1-2 (random)</li>
+          <li><span className="chance">Gold:</span> 5-10 (random)</li>
         </ul>
       </div>
     </div>
