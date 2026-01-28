@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import WalletConnect from './components/WalletConnect';
 import ErrorBox from './components/ErrorBox';
 import Dungeon from './components/Dungeon';
+import Crafting from './components/Crafting';
 import Inventory from './components/Inventory';
 import { useNotification } from './components/NotificationManager';
 import './App.scss';
@@ -207,15 +208,14 @@ function App() {
               )}
 
               {/* Column 2: Crafting */}
-              <div className="crafting-panel">
-                <div className="panel-header">
-                  <div className="panel-icon">⚒️</div>
-                  <h2>Crafting</h2>
-                </div>
-                <div className="panel-content">
-                  <p>Crafting system coming soon!</p>
-                </div>
-              </div>
+              {web3 && (
+                <Crafting
+                  web3={web3}
+                  account={account}
+                  contractAddress={contractAddress}
+                  onNotification={handleNotification}
+                />
+              )}
 
               {/* Column 3: Inventory */}
               {web3 && (
