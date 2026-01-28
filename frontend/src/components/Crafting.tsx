@@ -230,18 +230,18 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
         <h3>Requirements</h3>
         {selectedRecipe === 'rare' && (
           <ul>
-            <li className={canCraftRare ? 'ok' : 'bad'}>✅ 3 Common Swords</li>
+            <li className={canCraftRare ? 'ok' : 'bad'}>{canCraftRare ? '✅' : '❌'} 3 Common Swords</li>
           </ul>
         )}
         {selectedRecipe === 'epic' && (
           <ul>
-            <li className={canCraftEpic ? 'ok' : 'bad'}>✅ 2 Rare Swords</li>
+            <li className={canCraftEpic ? 'ok' : 'bad'}>{canCraftEpic ? '✅' : '❌'} 2 Rare Swords</li>
           </ul>
         )}
         {selectedRecipe === 'legendary' && (
           <ul>
-            <li className={balances.epic >= 5 ? 'ok' : 'bad'}>✅ 5 Epic Swords</li>
-            <li className={balances.gold >= 1000 ? 'ok' : 'bad'}>✅ 1000 Gold</li>
+            <li className={balances.epic >= 5 ? 'ok' : 'bad'}>{balances.epic >= 5 ? '✅' : '❌'} 5 Epic Swords</li>
+            <li className={balances.gold >= 1000 ? 'ok' : 'bad'}>{balances.gold >= 1000 ? '✅' : '❌'} 1000 Gold</li>
           </ul>
         )}
       </div>
