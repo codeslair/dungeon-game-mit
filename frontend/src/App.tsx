@@ -160,69 +160,107 @@ function App() {
           />
         )}
 
-        <div className="dashboard">
-          <div className="content-section">
-            <h2>Welcome to Dungeon Game</h2>
-            <p className="description">
-              This is a blockchain-based dungeon game where you can collect items, 
-              battle monsters, and earn rewards. Connect your wallet to get started!
-            </p>
-            
-            <div className="features-grid">
-              <div className="feature-card">
-                <div className="feature-icon">🎮</div>
-                <h3>ERC1155 Ready</h3>
-                <p>Multi-token standard for in-game items and characters</p>
+        {account ? (
+          <div className="dashboard">
+            {/* Stats Section */}
+            <div className="stats-section">
+              <div className="stat-card">
+                <div className="stat-icon">⚡</div>
+                <div className="stat-content">
+                  <span className="stat-label">Energy:</span>
+                  <span className="stat-value">0</span>
+                </div>
               </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">🔐</div>
-                <h3>Secure Wallet</h3>
-                <p>Connect with MetaMask or any Web3 wallet</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">🌐</div>
-                <h3>Sepolia Testnet</h3>
-                <p>Test environment ready for deployment</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">⚡</div>
-                <h3>Fast & Secure</h3>
-                <p>Built with Hardhat and Web3.js</p>
+              <div className="stat-card">
+                <div className="stat-icon">🪙</div>
+                <div className="stat-content">
+                  <span className="stat-label">Gold:</span>
+                  <span className="stat-value">0</span>
+                </div>
               </div>
             </div>
 
-            <div className="instructions">
-              <h3>Getting Started</h3>
-              <ol>
-                <li>Connect your wallet using the button above</li>
-                <li>Switch to Sepolia test network</li>
-                <li>Get test ETH from a Sepolia faucet</li>
-                <li>Start playing the dungeon game!</li>
-              </ol>
-              <div className="cta-buttons">
-                <a 
-                  href="https://sepoliafaucet.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="cta-button primary"
-                >
-                  Get Sepolia ETH
-                </a>
-                <a 
-                  href="https://metamask.io" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="cta-button secondary"
-                >
-                  Install MetaMask
-                </a>
+            {/* Game Cards Section */}
+            <div className="game-cards">
+              <div className="game-card">
+                <div className="game-card-icon">🏰</div>
+                <h3>Dungeon</h3>
+              </div>
+              <div className="game-card">
+                <div className="game-card-icon">⚒️</div>
+                <h3>Crafting</h3>
+              </div>
+              <div className="game-card">
+                <div className="game-card-icon">🎒</div>
+                <h3>Inventory</h3>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="dashboard">
+            <div className="content-section">
+              <h2>Welcome to Dungeon Game</h2>
+              <p className="description">
+                This is a blockchain-based dungeon game where you can collect items, 
+                battle monsters, and earn rewards. Connect your wallet to get started!
+              </p>
+              
+              <div className="features-grid">
+                <div className="feature-card">
+                  <div className="feature-icon">🎮</div>
+                  <h3>ERC1155 Ready</h3>
+                  <p>Multi-token standard for in-game items and characters</p>
+                </div>
+                
+                <div className="feature-card">
+                  <div className="feature-icon">🔐</div>
+                  <h3>Secure Wallet</h3>
+                  <p>Connect with MetaMask or any Web3 wallet</p>
+                </div>
+                
+                <div className="feature-card">
+                  <div className="feature-icon">🌐</div>
+                  <h3>Sepolia Testnet</h3>
+                  <p>Test environment ready for deployment</p>
+                </div>
+                
+                <div className="feature-card">
+                  <div className="feature-icon">⚡</div>
+                  <h3>Fast & Secure</h3>
+                  <p>Built with Hardhat and Web3.js</p>
+                </div>
+              </div>
+
+              <div className="instructions">
+                <h3>Getting Started</h3>
+                <ol>
+                  <li>Connect your wallet using the button above</li>
+                  <li>Switch to Sepolia test network</li>
+                  <li>Get test ETH from a Sepolia faucet</li>
+                  <li>Start playing the dungeon game!</li>
+                </ol>
+                <div className="cta-buttons">
+                  <a 
+                    href="https://sepoliafaucet.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="cta-button primary"
+                  >
+                    Get Sepolia ETH
+                  </a>
+                  <a 
+                    href="https://metamask.io" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="cta-button secondary"
+                  >
+                    Install MetaMask
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       <footer className="app-footer">

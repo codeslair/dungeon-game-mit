@@ -383,6 +383,102 @@ body {
   margin-top: 2rem;
 }
 
+// Stats Section
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  
+  .stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: $border-radius-sm;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: $transition;
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      border-color: $primary-color;
+    }
+    
+    .stat-icon {
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
+    }
+    
+    .stat-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      
+      .stat-label {
+        color: $gray-color;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+      
+      .stat-value {
+        color: $primary-color;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Game Cards
+.game-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  
+  .game-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: $border-radius;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: $transition;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      border-color: $primary-color;
+    }
+    
+    .game-card-icon {
+      font-size: 4rem;
+      display: block;
+    }
+    
+    h3 {
+      color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+}
+
 .content-section {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
