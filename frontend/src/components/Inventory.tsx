@@ -50,12 +50,12 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
       const tokenIds = [
         { id: 1001, name: 'Common Sword', icon: '🗡️', rarity: 'common' as const },
         { id: 1002, name: 'Rare Sword', icon: '⚔️', rarity: 'rare' as const },
-        { id: 1003, name: 'Epic Sword', icon: '�', rarity: 'epic' as const },
+        { id: 1003, name: 'Epic Sword', icon: '⚡🗡️', rarity: 'epic' as const },
         { id: 2001, name: 'Legendary Sword #1', icon: '🗡️✨', rarity: 'legendary' as const },
         { id: 2002, name: 'Legendary Sword #2', icon: '⚔️✨', rarity: 'legendary' as const },
-        { id: 2003, name: 'Legendary Sword #3', icon: '🔪✨', rarity: 'legendary' as const },
-        { id: 2004, name: 'Legendary Sword #4', icon: '🗡️⚡', rarity: 'legendary' as const },
-        { id: 2005, name: 'Legendary Sword #5', icon: '⚔️⚡', rarity: 'legendary' as const },
+        { id: 2003, name: 'Legendary Sword #3', icon: '🗡️🔥', rarity: 'legendary' as const },
+        { id: 2004, name: 'Legendary Sword #4', icon: '⚔️⚡', rarity: 'legendary' as const },
+        { id: 2005, name: 'Legendary Sword #5', icon: '🗡️💎', rarity: 'legendary' as const },
       ];
 
       const inventoryItems: InventoryItem[] = [];
