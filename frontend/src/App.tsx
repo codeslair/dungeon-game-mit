@@ -18,6 +18,7 @@ function App() {
   const [energy, setEnergy] = useState<number>(0);
   const [gold, setGold] = useState<number>(0);
   const [activeView, setActiveView] = useState<'dungeon' | 'crafting' | 'inventory'>('dungeon');
+  const [inventoryRefreshKey, setInventoryRefreshKey] = useState<number>(0);
   
   // Contract address - Deployed on Sepolia
   const [contractAddress] = useState<string>('0x7E5f8BD9e5bA1af4F5706837374fED0d544C8D04');
@@ -89,6 +90,10 @@ function App() {
   const handleBalanceUpdate = useCallback((energyBalance: number, goldBalance: number) => {
     setEnergy(energyBalance);
     setGold(goldBalance);
+  }, []);
+
+  const handleInventoryUpdate = useCallback(() => {
+    setInventoryRefreshKey(prev => prev + 1);
   }, []);
 
   const switchToSepolia = useCallback(async () => {
@@ -204,6 +209,7 @@ function App() {
                   contractAddress={contractAddress}
                   onNotification={handleNotification}
                   onBalanceUpdate={handleBalanceUpdate}
+                  onInventoryUpdate={handleInventoryUpdate}
                 />
               )}
 
@@ -214,6 +220,8 @@ function App() {
                   account={account}
                   contractAddress={contractAddress}
                   onNotification={handleNotification}
+                  onInventoryUpdate={handleInventoryUpdate}
+                  refreshKey={inventoryRefreshKey}
                 />
               )}
 
@@ -223,6 +231,7 @@ function App() {
                   web3={web3}
                   account={account}
                   contractAddress={contractAddress}
+                  refreshKey={inventoryRefreshKey}
                 />
               )}
             </div>

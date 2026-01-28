@@ -7,6 +7,7 @@ interface InventoryProps {
   web3: Web3;
   account: string;
   contractAddress: string;
+  refreshKey: number;
 }
 
 interface InventoryItem {
@@ -25,13 +26,13 @@ interface DungeonContractInstance {
   };
 }
 
-const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress }) => {
+const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, refreshKey }) => {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadInventory();
-  }, [web3, account, contractAddress]);
+  }, [web3, account, contractAddress, refreshKey]);
 
   const loadInventory = async () => {
     if (!web3 || !account || contractAddress === '0x0000000000000000000000000000000000000000') {

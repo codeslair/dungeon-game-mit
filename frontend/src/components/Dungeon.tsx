@@ -9,6 +9,7 @@ interface DungeonProps {
   contractAddress: string;
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
   onBalanceUpdate: (energy: number, gold: number) => void;
+  onInventoryUpdate: () => void;
 }
 
 interface DungeonContractMethod {
@@ -28,7 +29,7 @@ interface DungeonContractInstance {
   };
 }
 
-const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNotification, onBalanceUpdate }) => {
+const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNotification, onBalanceUpdate, onInventoryUpdate }) => {
   const [contract, setContract] = useState<DungeonContractInstance | null>(null);
   const [energy, setEnergy] = useState<number>(0);
   const [gold, setGold] = useState<number>(0);
@@ -215,6 +216,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       await contract.methods.claimStarterPack().send({ from: account });
       onNotification('Starter Pack claimed successfully! You received 10 Energy, 100 Gold, and 1 Common Sword!', 'success');
       await loadPlayerData();
+      onInventoryUpdate();
     } catch (error: any) {
       console.error('Error claiming starter pack:', error);
       onNotification(error.message || 'Failed to claim starter pack', 'error');
@@ -235,6 +237,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       await contract.methods.runDungeon().send({ from: account });
       onNotification('Dungeon completed! Check your inventory for loot!', 'success');
       await loadPlayerData();
+      onInventoryUpdate();
     } catch (error: any) {
       console.error('Error running dungeon:', error);
       onNotification(error.message || 'Failed to run dungeon', 'error');
@@ -259,6 +262,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       // Update countdown and reload data
       updateTimeRewardCountdown();
       await loadPlayerData();
+      onInventoryUpdate();
     } catch (error: any) {
       console.error('Error claiming time rewards:', error);
       onNotification(error.message || 'Failed to claim time rewards', 'error');

@@ -8,6 +8,8 @@ interface CraftingProps {
   account: string;
   contractAddress: string;
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
+  onInventoryUpdate: () => void;
+  refreshKey: number;
 }
 
 interface DungeonContractMethod {
@@ -35,7 +37,7 @@ const TOKEN_IDS = {
   LEGENDARY_IDS: [2001, 2002, 2003, 2004, 2005],
 };
 
-const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onNotification }) => {
+const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onNotification, onInventoryUpdate, refreshKey }) => {
   const [contract, setContract] = useState<DungeonContractInstance | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType>('rare');
   const [legendaryId, setLegendaryId] = useState<number>(TOKEN_IDS.LEGENDARY_IDS[0]);
@@ -84,7 +86,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
     if (contract && account) {
       loadBalances();
     }
-  }, [contract, account]);
+  }, [contract, account, refreshKey]);
 
   const estimateGas = async (method: DungeonContractMethod) => {
     try {
@@ -153,6 +155,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
       }
 
       await loadBalances();
+      onInventoryUpdate();
     } catch (error: any) {
       console.error('Error crafting item:', error);
       onNotification(error.message || 'Crafting failed', 'error');
