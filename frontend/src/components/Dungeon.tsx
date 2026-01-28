@@ -185,7 +185,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
       const lastClaim = await contract.methods.lastTimeRewardClaim(account).call() as string;
       const lastClaimTimestamp = parseInt(lastClaim);
-      const cooldownDuration = 24 * 60 * 60; // 24 hours in seconds
+      const cooldownDuration = 5 * 60; // 5 minutes in seconds
 
       const nextClaimTime = lastClaimTimestamp + cooldownDuration;
       const timeRemaining = nextClaimTime - now;
@@ -195,10 +195,9 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
         setTimeRewardCountdown('Ready');
       } else {
         setCanClaimTimeReward(false);
-        const hours = Math.floor(timeRemaining / 3600);
-        const minutes = Math.floor((timeRemaining % 3600) / 60);
+        const minutes = Math.floor(timeRemaining / 60);
         const seconds = timeRemaining % 60;
-        setTimeRewardCountdown(`${hours}h ${minutes}m ${seconds}s`);
+        setTimeRewardCountdown(`${minutes}m ${seconds}s`);
       }
     } catch (error: any) {
       console.error('Error updating time reward countdown:', error);
@@ -361,10 +360,10 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       </div>
 
       <div className="loot-chances time-rewards-info">
-        <h3>Time Rewards (24h cooldown):</h3>
+        <h3>Time Rewards (5min cooldown):</h3>
         <ul>
-          <li><span className="chance">Gold:</span> 50-100 (random)</li>
-          <li><span className="chance">Energy:</span> 5-10 (random)</li>
+          <li><span className="chance">Gold:</span> 5-10 (random)</li>
+          <li><span className="chance">Energy:</span> 1-2 (random)</li>
         </ul>
       </div>
     </div>

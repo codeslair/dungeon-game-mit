@@ -27,7 +27,7 @@ contract DungeonToken is ERC1155, Ownable {
     
     // Tracking last time rewards claim per player
     mapping(address => uint256) public lastTimeRewardClaim;
-    uint256 public constant TIME_REWARD_COOLDOWN = 24 hours;
+    uint256 public constant TIME_REWARD_COOLDOWN = 5 minutes;
     
     // Events
     event StarterPackClaimed(address indexed player);
@@ -100,10 +100,10 @@ contract DungeonToken is ERC1155, Ownable {
         
         lastTimeRewardClaim[msg.sender] = block.timestamp;
         
-        // Generate pseudo-random rewards: 50-100 Gold and 5-10 Energy
+        // Generate pseudo-random rewards: 5-10 Gold and 1-2 Energy
         uint256 random = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, block.prevrandao))) % 100;
-        uint256 goldReward = 50 + (random % 51);
-        uint256 energyReward = 5 + (random % 6);
+        uint256 goldReward = 5 + (random % 6);
+        uint256 energyReward = 1 + (random % 2);
         
         _mint(msg.sender, ENERGY, energyReward, "");
         _mint(msg.sender, GOLD, goldReward, "");
