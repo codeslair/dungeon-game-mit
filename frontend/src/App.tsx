@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Web3 from 'web3';
 import WalletConnect from './components/WalletConnect';
 import ErrorBox from './components/ErrorBox';
+import Dungeon from './components/Dungeon';
 import { useNotification } from './components/NotificationManager';
 import './App.scss';
 
@@ -12,6 +13,12 @@ function App() {
   const [balance, setBalance] = useState<string>('0');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+  const [energy, setEnergy] = useState<number>(0);
+  const [gold, setGold] = useState<number>(0);
+  const [activeView, setActiveView] = useState<'dungeon' | 'crafting' | 'inventory'>('dungeon');
+  
+  // Contract address - Deployed on Sepolia
+  const [contractAddress] = useState<string>('0xC311F005fd4Ec2e8cB98f3B4ff44422D67578c06');
   
   // Use custom notification system
   const { addNotification, NotificationContainer } = useNotification();
@@ -76,6 +83,11 @@ function App() {
   const handleNotification = useCallback((message: string, type: 'success' | 'error' | 'warning' | 'info') => {
     addNotification(message, type);
   }, [addNotification]);
+
+  const handleBalanceUpdate = useCallback((energyBalance: number, goldBalance: number) => {
+    setEnergy(energyBalance);
+    setGold(goldBalance);
+  }, []);
 
   const switchToSepolia = useCallback(async () => {
     if (!window.ethereum) return;
@@ -168,31 +180,51 @@ function App() {
                 <div className="stat-icon">⚡</div>
                 <div className="stat-content">
                   <span className="stat-label">Energy:</span>
-                  <span className="stat-value">0</span>
+                  <span className="stat-value">{energy}</span>
                 </div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">🪙</div>
                 <div className="stat-content">
                   <span className="stat-label">Gold:</span>
-                  <span className="stat-value">0</span>
+                  <span className="stat-value">{gold}</span>
                 </div>
               </div>
             </div>
 
-            {/* Game Cards Section */}
-            <div className="game-cards">
-              <div className="game-card">
-                <div className="game-card-icon">🏰</div>
-                <h3>Dungeon</h3>
+            {/* Three Column Layout */}
+            <div className="game-columns">
+              {/* Column 1: Dungeon */}
+              {web3 && (
+                <Dungeon 
+                  web3={web3}
+                  account={account}
+                  contractAddress={contractAddress}
+                  onNotification={handleNotification}
+                  onBalanceUpdate={handleBalanceUpdate}
+                />
+              )}
+
+              {/* Column 2: Crafting */}
+              <div className="crafting-panel">
+                <div className="panel-header">
+                  <div className="panel-icon">⚒️</div>
+                  <h2>Crafting</h2>
+                </div>
+                <div className="panel-content">
+                  <p>Crafting system coming soon!</p>
+                </div>
               </div>
-              <div className="game-card">
-                <div className="game-card-icon">⚒️</div>
-                <h3>Crafting</h3>
-              </div>
-              <div className="game-card">
-                <div className="game-card-icon">🎒</div>
-                <h3>Inventory</h3>
+
+              {/* Column 3: Inventory */}
+              <div className="inventory-panel">
+                <div className="panel-header">
+                  <div className="panel-icon">🎒</div>
+                  <h2>Inventory</h2>
+                </div>
+                <div className="panel-content">
+                  <p>Inventory system coming soon!</p>
+                </div>
               </div>
             </div>
           </div>

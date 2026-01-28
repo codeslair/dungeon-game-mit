@@ -17,3 +17,10 @@ node_modules
 ignition/deployments/chain-31337
 
 .env
+
+.vscode
+
+# Frontend build output
+frontend/build
+frontend/.env.local
+frontend/.env.production.local

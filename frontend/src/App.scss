@@ -435,7 +435,7 @@ body {
   }
 }
 
-// Game Cards
+// Game Cards - Converted to Tabs
 .game-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -464,6 +464,13 @@ body {
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
       border-color: $primary-color;
     }
+
+    &.active {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(108, 92, 231, 0.05));
+      border: 2px solid $primary-color;
+      box-shadow: 0 8px 30px rgba(108, 92, 231, 0.3);
+      transform: translateY(-4px);
+    }
     
     .game-card-icon {
       font-size: 4rem;
@@ -475,6 +482,80 @@ body {
       font-size: 1.5rem;
       font-weight: 700;
       margin: 0;
+    }
+  }
+}
+
+// Three Column Game Layout
+.game-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+  
+  @media (max-width: 1400px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Crafting and Inventory Panels
+.crafting-panel,
+.inventory-panel {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 32px;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    
+    .panel-icon {
+      font-size: 36px;
+    }
+    
+    h2 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+    }
+  }
+  
+  .panel-content {
+    p {
+      color: #aaa;
+      font-size: 16px;
+      text-align: center;
+      padding: 40px 20px;
+    }
+  }
+}
+
+.game-content {
+  margin-top: 2rem;
+  
+  .coming-soon {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: $border-radius;
+    padding: 4rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    
+    h2 {
+      color: $primary-color;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      color: $gray-color;
+      font-size: 1.2rem;
     }
   }
 }
