@@ -42,7 +42,7 @@ body {
   &-header {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,15 +53,15 @@ body {
     .logo {
       h1 {
         color: $primary-color;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
         letter-spacing: -0.5px;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.15rem;
       }
       
       .subtitle {
         color: $gray-color;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 500;
       }
     }
@@ -126,7 +126,7 @@ body {
   
   &-main {
     flex: 1;
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     max-width: 1400px;
     margin: 0 auto;
     width: 100%;
@@ -395,7 +395,7 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(108, 92, 231, 0.2);
     border-radius: $border-radius-sm;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 0.9rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -422,13 +422,13 @@ body {
       
       .stat-label {
         color: $gray-color;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 500;
       }
       
       .stat-value {
         color: $primary-color;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
       }
     }

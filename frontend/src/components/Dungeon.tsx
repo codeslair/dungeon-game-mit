@@ -284,18 +284,19 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
         <h2>Dungeon</h2>
       </div>
 
-      <div className="dungeon-energy">
-        <span className="energy-icon">⚡</span>
-        <span className="energy-label">Energy: <strong>{energy}</strong></span>
-        <div className="energy-info">Cost: 1 Energy per run</div>
-      </div>
-
       <div className="loot-chances">
         <h3>Loot Chances:</h3>
         <ul>
           <li><span className="chance">70%</span> - Common Sword</li>
           <li><span className="chance">20%</span> - Rare Sword</li>
           <li><span className="chance">10%</span> - Epic Sword</li>
+        </ul>
+      </div>
+
+      <div className="loot-chances dungeon-cost-note">
+        <h3>Dungeon Cost:</h3>
+        <ul>
+          <li><span className="chance">Cost:</span> 1 Energy per run</li>
         </ul>
       </div>
 

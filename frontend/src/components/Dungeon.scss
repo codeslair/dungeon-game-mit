@@ -1,7 +1,7 @@
 .dungeon-container {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 16px;
-  padding: 22px;
+  padding: 18px;
   color: #fff;
   max-width: 500px;
   margin: 0 auto;
@@ -11,48 +11,17 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 
     .dungeon-icon {
-      font-size: 36px;
+      font-size: 30px;
     }
 
     h2 {
       margin: 0;
-      font-size: 32px;
+      font-size: 26px;
       font-weight: 700;
       color: #fff;
-    }
-  }
-
-  .dungeon-energy {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .energy-icon {
-      font-size: 24px;
-      margin-right: 8px;
-    }
-
-    .energy-label {
-      font-size: 18px;
-      color: #e0e0e0;
-
-      strong {
-        color: #ffd700;
-        font-size: 24px;
-      }
-    }
-
-    .energy-info {
-      font-size: 14px;
-      color: #aaa;
     }
   }
 
@@ -60,8 +29,8 @@
     background: rgba(255, 107, 107, 0.1);
     border: 1px solid rgba(255, 107, 107, 0.3);
     border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 14px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -100,11 +69,11 @@
   }
 
   .loot-chances {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 
     h3 {
-      font-size: 16px;
-      margin-bottom: 8px;
+      font-size: 15px;
+      margin-bottom: 6px;
       color: #fff;
     }
 
@@ -114,8 +83,8 @@
       margin: 0;
 
       li {
-        padding: 6px 0;
-        font-size: 14px;
+        padding: 4px 0;
+        font-size: 13px;
         color: #e0e0e0;
 
         .chance {
@@ -133,8 +102,8 @@
     background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05));
     border: 2px solid rgba(255, 107, 107, 0.3);
     border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -150,23 +119,23 @@
     }
 
     .timer-icon {
-      font-size: 24px;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
     .timer-label {
       color: #e0e0e0;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 500;
     }
 
     .timer-countdown {
       color: #ff6b6b;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 700;
       font-family: 'Courier New', monospace;
       margin-left: auto;
-      min-width: 140px;
+      min-width: 110px;
       text-align: right;
     }
   }
@@ -174,12 +143,12 @@
   .dungeon-actions {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 12px;
 
     .action-button {
-      padding: 14px 24px;
-      font-size: 16px;
+      padding: 10px 18px;
+      font-size: 14px;
       font-weight: 600;
       border: none;
       border-radius: 8px;
