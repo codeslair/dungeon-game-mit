@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Web3 from 'web3';
 
 declare global {
@@ -18,6 +18,18 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
   const [network, setNetwork] = useState<string>('');
   const [chainId, setChainId] = useState<number>(0);
   const [isConnecting, setIsConnecting] = useState(false);
+  
+  // Use refs to avoid stale closures in event listeners
+  const accountRef = useRef<string>('');
+  const onConnectRef = useRef(onConnect);
+  const onNotificationRef = useRef(onNotification);
+  
+  // Update refs whenever props change
+  useEffect(() => {
+    accountRef.current = account;
+    onConnectRef.current = onConnect;
+    onNotificationRef.current = onNotification;
+  }, [account, onConnect, onNotification]);
 
   const getNetworkName = useCallback((id: number): string => {
     const networks: { [key: number]: string } = {
@@ -76,23 +88,15 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     } else {
       const newAccount = accounts[0];
       setAccount(newAccount);
-      
-      if (window.ethereum) {
-        const web3 = new Web3(window.ethereum);
-        web3.eth.getChainId().then(id => {
-          const chainIdNumber = Number(id);
-          onConnect(newAccount, web3, chainIdNumber);
-        });
-      }
+      accountRef.current = newAccount;
     }
-  }, [disconnectWallet, onConnect]);
+  }, [disconnectWallet]);
 
   const handleChainChanged = useCallback((newChainId: string) => {
     const chainIdNum = parseInt(newChainId, 16);
     setChainId(chainIdNum);
     updateNetworkName(chainIdNum);
-    onNotification(`Network changed to ${getNetworkName(chainIdNum)}`, 'info');
-  }, [getNetworkName, onNotification, updateNetworkName]);
+  }, [updateNetworkName]);
 
   const handleDisconnect = useCallback(() => {
     disconnectWallet();
@@ -100,21 +104,79 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
 
   useEffect(() => {
     checkWalletConnection();
+  }, []);
+
+  // Set up event listeners once on mount
+  useEffect(() => {
+    if (!window.ethereum) return;
     
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
-      window.ethereum.on('chainChanged', handleChainChanged);
-      window.ethereum.on('disconnect', handleDisconnect);
-    }
+    console.log('Setting up MetaMask event listeners');
+    
+    // Define listeners that use refs to access latest values
+    const onAccountsChanged = (accounts: string[]) => {
+      console.log('accountsChanged event fired:', accounts);
+      if (accounts.length === 0) {
+        console.log('No accounts, disconnecting');
+        setAccount('');
+        setNetwork('');
+        setChainId(0);
+        onDisconnect();
+        onNotificationRef.current('Wallet disconnected', 'info');
+      } else {
+        const newAccount = accounts[0];
+        console.log('New account selected:', newAccount);
+        setAccount(newAccount);
+        accountRef.current = newAccount;
+        
+        const web3 = new Web3(window.ethereum);
+        web3.eth.getChainId().then(id => {
+          const chainIdNumber = Number(id);
+          console.log('Account changed, calling onConnect with:', newAccount, chainIdNumber);
+          onConnectRef.current(newAccount, web3, chainIdNumber);
+        });
+      }
+    };
+    
+    const onChainChanged = (chainId: string) => {
+      console.log('chainChanged event fired:', chainId);
+      const chainIdNum = parseInt(chainId, 16);
+      console.log('Parsed chainId:', chainIdNum);
+      setChainId(chainIdNum);
+      setNetwork(getNetworkName(chainIdNum));
+      onNotificationRef.current(`Network changed to ${getNetworkName(chainIdNum)}`, 'info');
+      
+      if (accountRef.current && window.ethereum) {
+        console.log('Network changed, calling onConnect with:', accountRef.current, chainIdNum);
+        const web3 = new Web3(window.ethereum);
+        onConnectRef.current(accountRef.current, web3, chainIdNum);
+      }
+    };
+    
+    const onDisconnectEvent = () => {
+      console.log('disconnect event fired');
+      setAccount('');
+      setNetwork('');
+      setChainId(0);
+      onDisconnect();
+      onNotificationRef.current('Wallet disconnected', 'info');
+    };
+    
+    // Attach listeners
+    window.ethereum.on('accountsChanged', onAccountsChanged);
+    window.ethereum.on('chainChanged', onChainChanged);
+    window.ethereum.on('disconnect', onDisconnectEvent);
+    
+    console.log('Event listeners attached');
     
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
-        window.ethereum.removeListener('disconnect', handleDisconnect);
+        console.log('Removing MetaMask event listeners');
+        window.ethereum.removeListener('accountsChanged', onAccountsChanged);
+        window.ethereum.removeListener('chainChanged', onChainChanged);
+        window.ethereum.removeListener('disconnect', onDisconnectEvent);
       }
     };
-  }, [checkWalletConnection, handleAccountsChanged, handleChainChanged, handleDisconnect]);
+  }, [getNetworkName, onDisconnect]);
 
   const connectWallet = async () => {
     if (!window.ethereum) {
