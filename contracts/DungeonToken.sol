@@ -25,6 +25,10 @@ contract DungeonToken is ERC1155, Ownable {
     // Tracking who claimed starter pack
     mapping(address => bool) public hasClaimedStarterPack;
     
+    // Tracking last time rewards claim per player
+    mapping(address => uint256) public lastTimeRewardClaim;
+    uint256 public constant TIME_REWARD_COOLDOWN = 24 hours;
+    
     // Events
     event StarterPackClaimed(address indexed player);
     event DungeonRun(address indexed player, uint256 lootId, uint256 amount);
@@ -85,6 +89,26 @@ contract DungeonToken is ERC1155, Ownable {
         _mint(msg.sender, GOLD, goldReward, "");
         
         emit DungeonRun(msg.sender, lootId, lootAmount);
+    }
+    
+    // Claim time rewards (once per 24 hours)
+    function claimTimeRewards() external {
+        require(
+            block.timestamp >= lastTimeRewardClaim[msg.sender] + TIME_REWARD_COOLDOWN,
+            "Time reward cooldown not met"
+        );
+        
+        lastTimeRewardClaim[msg.sender] = block.timestamp;
+        
+        // Generate pseudo-random rewards: 50-100 Gold and 5-10 Energy
+        uint256 random = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, block.prevrandao))) % 100;
+        uint256 goldReward = 50 + (random % 51);
+        uint256 energyReward = 5 + (random % 6);
+        
+        _mint(msg.sender, ENERGY, energyReward, "");
+        _mint(msg.sender, GOLD, goldReward, "");
+        
+        emit DungeonRun(msg.sender, 0, 0); // Reusing DungeonRun event for time rewards
     }
     
     // Craft items - burn lower tier items to create higher tier

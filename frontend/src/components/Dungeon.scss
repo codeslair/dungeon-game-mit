@@ -1,7 +1,7 @@
 .dungeon-container {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 16px;
-  padding: 32px;
+  padding: 22px;
   color: #fff;
   max-width: 500px;
   margin: 0 auto;
@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 
     .dungeon-icon {
       font-size: 36px;
@@ -29,8 +29,8 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -60,8 +60,8 @@
     background: rgba(255, 107, 107, 0.1);
     border: 1px solid rgba(255, 107, 107, 0.3);
     border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -100,11 +100,11 @@
   }
 
   .loot-chances {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 
     h3 {
-      font-size: 18px;
-      margin-bottom: 12px;
+      font-size: 16px;
+      margin-bottom: 8px;
       color: #fff;
     }
 
@@ -114,8 +114,8 @@
       margin: 0;
 
       li {
-        padding: 8px 0;
-        font-size: 15px;
+        padding: 6px 0;
+        font-size: 14px;
         color: #e0e0e0;
 
         .chance {
@@ -125,6 +125,49 @@
           color: #ffd700;
         }
       }
+    }
+  }
+
+  // Time Rewards Countdown Display
+  .time-rewards-timer {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05));
+    border: 2px solid rgba(255, 107, 107, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: pulse 2s ease-in-out infinite;
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .timer-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .timer-label {
+      color: #e0e0e0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .timer-countdown {
+      color: #ff6b6b;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      margin-left: auto;
+      min-width: 140px;
+      text-align: right;
     }
   }
 
@@ -226,9 +269,29 @@
     }
 
     .warning-text {
+      flex: 1;
       font-size: 11px;
       color: #ffdb58;
       line-height: 1.5;
+    }
+
+    .refresh-gas {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+
+      &:hover:not(:disabled) {
+        transform: rotate(180deg);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
     }
   }
 }

@@ -39,9 +39,11 @@ export interface DungeonTokenInterface extends Interface {
       | "RARE_SWORD"
       | "STARTER_PACK_ENERGY"
       | "STARTER_PACK_GOLD"
+      | "TIME_REWARD_COOLDOWN"
       | "balanceOf"
       | "balanceOfBatch"
       | "claimStarterPack"
+      | "claimTimeRewards"
       | "craftEpicSword"
       | "craftItem"
       | "craftLegendarySword"
@@ -49,6 +51,7 @@ export interface DungeonTokenInterface extends Interface {
       | "getInventory"
       | "hasClaimedStarterPack"
       | "isApprovedForAll"
+      | "lastTimeRewardClaim"
       | "mintEnergy"
       | "mintGold"
       | "owner"
@@ -121,6 +124,10 @@ export interface DungeonTokenInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "TIME_REWARD_COOLDOWN",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "balanceOf",
     values: [AddressLike, BigNumberish]
   ): string;
@@ -130,6 +137,10 @@ export interface DungeonTokenInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "claimStarterPack",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "claimTimeRewards",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -159,6 +170,10 @@ export interface DungeonTokenInterface extends Interface {
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lastTimeRewardClaim",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "mintEnergy",
@@ -245,6 +260,10 @@ export interface DungeonTokenInterface extends Interface {
     functionFragment: "STARTER_PACK_GOLD",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "TIME_REWARD_COOLDOWN",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "balanceOfBatch",
@@ -252,6 +271,10 @@ export interface DungeonTokenInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "claimStarterPack",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "claimTimeRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -277,6 +300,10 @@ export interface DungeonTokenInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "lastTimeRewardClaim",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mintEnergy", data: BytesLike): Result;
@@ -531,6 +558,8 @@ export interface DungeonToken extends BaseContract {
 
   STARTER_PACK_GOLD: TypedContractMethod<[], [bigint], "view">;
 
+  TIME_REWARD_COOLDOWN: TypedContractMethod<[], [bigint], "view">;
+
   balanceOf: TypedContractMethod<
     [account: AddressLike, id: BigNumberish],
     [bigint],
@@ -544,6 +573,8 @@ export interface DungeonToken extends BaseContract {
   >;
 
   claimStarterPack: TypedContractMethod<[], [void], "nonpayable">;
+
+  claimTimeRewards: TypedContractMethod<[], [void], "nonpayable">;
 
   craftEpicSword: TypedContractMethod<[], [void], "nonpayable">;
 
@@ -588,6 +619,12 @@ export interface DungeonToken extends BaseContract {
   isApprovedForAll: TypedContractMethod<
     [account: AddressLike, operator: AddressLike],
     [boolean],
+    "view"
+  >;
+
+  lastTimeRewardClaim: TypedContractMethod<
+    [arg0: AddressLike],
+    [bigint],
     "view"
   >;
 
@@ -697,6 +734,9 @@ export interface DungeonToken extends BaseContract {
     nameOrSignature: "STARTER_PACK_GOLD"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "TIME_REWARD_COOLDOWN"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<
     [account: AddressLike, id: BigNumberish],
@@ -712,6 +752,9 @@ export interface DungeonToken extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "claimStarterPack"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "claimTimeRewards"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "craftEpicSword"
@@ -758,6 +801,9 @@ export interface DungeonToken extends BaseContract {
     [boolean],
     "view"
   >;
+  getFunction(
+    nameOrSignature: "lastTimeRewardClaim"
+  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
   getFunction(
     nameOrSignature: "mintEnergy"
   ): TypedContractMethod<

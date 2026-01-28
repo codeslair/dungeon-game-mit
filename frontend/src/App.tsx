@@ -19,7 +19,7 @@ function App() {
   const [activeView, setActiveView] = useState<'dungeon' | 'crafting' | 'inventory'>('dungeon');
   
   // Contract address - Deployed on Sepolia
-  const [contractAddress] = useState<string>('0xC311F005fd4Ec2e8cB98f3B4ff44422D67578c06');
+  const [contractAddress] = useState<string>('0x7E5f8BD9e5bA1af4F5706837374fED0d544C8D04');
   
   // Use custom notification system
   const { addNotification, NotificationContainer } = useNotification();
