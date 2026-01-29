@@ -5,6 +5,7 @@ import ErrorBox from './components/ErrorBox';
 import Dungeon from './components/Dungeon';
 import Crafting from './components/Crafting';
 import Inventory from './components/Inventory';
+import Trade from './components/Trade';
 import { useNotification } from './components/NotificationManager';
 import './App.scss';
 
@@ -232,6 +233,16 @@ function App() {
                   account={account}
                   contractAddress={contractAddress}
                   refreshKey={inventoryRefreshKey}
+                />
+              )}
+
+              {/* Column 4: Trade */}
+              {web3 && (
+                <Trade
+                  web3={web3}
+                  account={account}
+                  contractAddress={contractAddress}
+                  onNotification={handleNotification}
                 />
               )}
             </div>

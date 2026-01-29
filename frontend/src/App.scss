@@ -486,10 +486,10 @@ body {
   }
 }
 
-// Three Column Game Layout
+// Four Column Game Layout
 .game-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 500px));
+  grid-template-columns: repeat(4, minmax(0, 500px));
   gap: 1.1rem;
   margin-top: 0.4rem;
   justify-content: center;
