@@ -31,7 +31,12 @@ const Footer: React.FC = () => {
         
         <div className="footer-section">
           <h3>Project</h3>
-          <p>MIT Group Project © 2026</p>
+          <p>
+            MIT Group Project © 2026 • 
+            <a href="https://github.com/codeslair/dungeon-game-mit" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </p>
         </div>
       </div>
     </footer>
