@@ -34,6 +34,7 @@ const ErrorBox: React.FC<ErrorBoxProps> = ({
 
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message, autoClose, duration]);
 
   const handleClose = () => {
