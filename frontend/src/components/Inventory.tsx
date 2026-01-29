@@ -121,7 +121,7 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
       ) : items.length === 0 ? (
         <div className="empty-inventory">
           <p>No items yet!</p>
-          <p className="hint">Run dungeons to collect loot</p>
+          <p className="hint">Run dungeons to collect loot!</p>
         </div>
       ) : (
         <div className="inventory-grid">

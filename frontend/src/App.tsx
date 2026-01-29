@@ -6,8 +6,10 @@ import Dungeon from './components/Dungeon';
 import Crafting from './components/Crafting';
 import Inventory from './components/Inventory';
 import Trade from './components/Trade';
+import AdminPanel from './components/AdminPanel';
 import Footer from './components/Footer';
 import { useNotification } from './components/NotificationManager';
+import DungeonTokenABI from './abis/DungeonToken.json';
 import './App.scss';
 
 /**
@@ -30,9 +32,11 @@ function App() {
   const [energy, setEnergy] = useState<number>(0);
   const [gold, setGold] = useState<number>(0);
   const [inventoryRefreshKey, setInventoryRefreshKey] = useState<number>(0);
+  const [showAdminPanel, setShowAdminPanel] = useState<boolean>(false);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   
   // Smart contract address on Sepolia testnet
-  const [contractAddress] = useState<string>('0x9eAD4A96C3cd8b5c0b9A41dF1F2C632Af5eCF1F7');
+  const [contractAddress] = useState<string>('0xb117Cb59815184cFe27ff5c4C99a4e4D64797a2D');
   
   // Notification system
   const { addNotification, NotificationContainer } = useNotification();
@@ -66,6 +70,29 @@ function App() {
       }
     }
   }, [account, web3, chainId, loadAccountBalance]);
+
+  useEffect(() => {
+    const checkOwner = async () => {
+      if (!web3 || !account || isWrongNetwork) {
+        setIsOwner(false);
+        return;
+      }
+
+      try {
+        const contract = new web3.eth.Contract(
+          DungeonTokenABI.abi as any,
+          contractAddress
+        ) as any;
+        const owner = await contract.methods.owner().call();
+        setIsOwner(owner?.toLowerCase() === account.toLowerCase());
+      } catch (error) {
+        console.error('Error checking owner:', error);
+        setIsOwner(false);
+      }
+    };
+
+    checkOwner();
+  }, [web3, account, contractAddress, isWrongNetwork]);
 
   // Get human-readable network name from chainId
   const getNetworkName = useCallback((id: number): string => {
@@ -138,6 +165,16 @@ function App() {
               </div>
             </div>
           )}
+          {account && !isWrongNetwork && isOwner && (
+            <label className="admin-toggle">
+              <input
+                type="checkbox"
+                checked={showAdminPanel}
+                onChange={(e) => setShowAdminPanel(e.target.checked)}
+              />
+              <span>Admin</span>
+            </label>
+          )}
           <WalletConnect 
             onConnect={handleConnect}
             onDisconnect={handleDisconnect}
@@ -162,70 +199,90 @@ function App() {
 
         {account ? (
           <div className="dashboard">
-            {/* Stats Section */}
-            <div className="stats-section">
-              <div className="stat-card">
-                <div className="stat-icon">⚡</div>
-                <div className="stat-content">
-                  <span className="stat-label">Energy:</span>
-                  <span className="stat-value">{energy}</span>
-                </div>
+            {isWrongNetwork ? (
+              <div className="content-section">
+                <h2>Wrong network</h2>
+                <p className="description">
+                  Please switch to the correct network to load game data.
+                </p>
               </div>
-              <div className="stat-card">
-                <div className="stat-icon">💰</div>
-                <div className="stat-content">
-                  <span className="stat-label">Gold:</span>
-                  <span className="stat-value">{gold}</span>
+            ) : (
+              <>
+                {web3 && showAdminPanel && (
+                  <AdminPanel
+                    web3={web3}
+                    account={account}
+                    contractAddress={contractAddress}
+                    onNotification={handleNotification}
+                    onInventoryUpdate={handleInventoryUpdate}
+                  />
+                )}
+                {/* Stats Section */}
+                <div className="stats-section">
+                  <div className="stat-card">
+                    <div className="stat-icon">⚡</div>
+                    <div className="stat-content">
+                      <span className="stat-label">Energy:</span>
+                      <span className="stat-value">{energy}</span>
+                    </div>
+                  </div>
+                  <div className="stat-card">
+                    <div className="stat-icon">💰</div>
+                    <div className="stat-content">
+                      <span className="stat-label">Gold:</span>
+                      <span className="stat-value">{gold}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Three Column Layout */}
-            <div className="game-columns">
-              {/* Column 1: Dungeon */}
-              {web3 && (
-                <Dungeon 
-                  web3={web3}
-                  account={account}
-                  contractAddress={contractAddress}
-                  onNotification={handleNotification}
-                  onBalanceUpdate={handleBalanceUpdate}
-                  onInventoryUpdate={handleInventoryUpdate}
-                />
-              )}
+                {/* Three Column Layout */}
+                <div className="game-columns">
+                  {/* Column 1: Dungeon */}
+                  {web3 && (
+                    <Dungeon 
+                      web3={web3}
+                      account={account}
+                      contractAddress={contractAddress}
+                      onNotification={handleNotification}
+                      onBalanceUpdate={handleBalanceUpdate}
+                      onInventoryUpdate={handleInventoryUpdate}
+                    />
+                  )}
 
-              {/* Column 2: Crafting */}
-              {web3 && (
-                <Crafting
-                  web3={web3}
-                  account={account}
-                  contractAddress={contractAddress}
-                  onNotification={handleNotification}
-                  onInventoryUpdate={handleInventoryUpdate}
-                  refreshKey={inventoryRefreshKey}
-                />
-              )}
+                  {/* Column 2: Crafting */}
+                  {web3 && (
+                    <Crafting
+                      web3={web3}
+                      account={account}
+                      contractAddress={contractAddress}
+                      onNotification={handleNotification}
+                      onInventoryUpdate={handleInventoryUpdate}
+                      refreshKey={inventoryRefreshKey}
+                    />
+                  )}
 
-              {/* Column 3: Inventory */}
-              {web3 && (
-                <Inventory 
-                  web3={web3}
-                  account={account}
-                  contractAddress={contractAddress}
-                  refreshKey={inventoryRefreshKey}
-                />
-              )}
+                  {/* Column 3: Inventory */}
+                  {web3 && (
+                    <Inventory 
+                      web3={web3}
+                      account={account}
+                      contractAddress={contractAddress}
+                      refreshKey={inventoryRefreshKey}
+                    />
+                  )}
 
-              {/* Column 4: Trade */}
-              {web3 && (
-                <Trade
-                  web3={web3}
-                  account={account}
-                  contractAddress={contractAddress}
-                  onNotification={handleNotification}
-                />
-              )}
-            </div>
+                  {/* Column 4: Trade */}
+                  {web3 && (
+                    <Trade
+                      web3={web3}
+                      account={account}
+                      contractAddress={contractAddress}
+                      onNotification={handleNotification}
+                    />
+                  )}
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="dashboard">

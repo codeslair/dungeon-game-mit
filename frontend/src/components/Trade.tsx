@@ -73,9 +73,9 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
       setInventory(items);
     } catch (error) {
       console.error('Error loading inventory:', error);
-      onNotification('Error loading inventory', 'error');
+      setInventory([]);
     }
-  }, [web3, account, contractAddress, onNotification]);
+  }, [web3, account, contractAddress]);
 
   // Estimate gas for batch trade
   const estimateTradeGas = useCallback(async () => {
@@ -237,7 +237,7 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
 
       {inventory.length === 0 ? (
         <div className="trade-empty">
-          <p>No swords available to trade</p>
+          <p>No swords available to trade!</p>
           <p className="hint">Run the dungeon to get swords!</p>
         </div>
       ) : (
