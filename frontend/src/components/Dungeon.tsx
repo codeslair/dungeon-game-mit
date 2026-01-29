@@ -29,12 +29,24 @@ interface DungeonContractInstance {
   };
 }
 
+/**
+ * Dungeon Component
+ * Main game loop for dungeon exploration and rewards
+ * Players can:
+ * - Claim starter pack (100 energy, 500 gold, 1 common sword)
+ * - Run dungeons to earn gold and swords
+ * - Claim passive time rewards every 24 hours
+ */
 const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNotification, onBalanceUpdate, onInventoryUpdate }) => {
+  // Contract and wallet state
   const [contract, setContract] = useState<DungeonContractInstance | null>(null);
+  
+  // Player balance state
   const [energy, setEnergy] = useState<number>(0);
-  const [gold, setGold] = useState<number>(0);
   const [hasClaimedStarterPack, setHasClaimedStarterPack] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  // Gas estimation state (for UI display)
   const [gasEstimates, setGasEstimates] = useState<{
     starterPack: string;
     runDungeon: string;
@@ -45,12 +57,12 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
     timeRewards: '~0.001 ETH',
   });
   
-  // Time Rewards Timer
+  // Time reward countdown state
   const [timeRewardCountdown, setTimeRewardCountdown] = useState<string>('Ready');
   const [canClaimTimeReward, setCanClaimTimeReward] = useState<boolean>(true);
   const [lastGasUpdate, setLastGasUpdate] = useState<string>('Never');
   
-  // Network gas data
+  // Network gas breakdown display
   const [baseFee, setBaseFee] = useState<string>('--');
   const [priorityFee, setPriorityFee] = useState<string>('--');
   const [totalGas, setTotalGas] = useState<string>('--');
@@ -71,36 +83,44 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
     }
   }, [web3, account, contractAddress, onNotification]);
 
-  // Load player data
+  // Load player data when contract is ready
   useEffect(() => {
     if (contract && account) {
       loadPlayerData();
     }
   }, [contract, account]);
 
+  /**
+   * Load player state from blockchain:
+   * - Starter pack claim status
+   * - Current energy and gold balance
+   * - Notify parent component of balance updates
+   */
   const loadPlayerData = async () => {
     if (!contract || !account) return;
 
     try {
-      // Check if claimed starter pack
+      // Check if player has already claimed starter pack
       const claimed = await contract.methods.hasClaimedStarterPack(account).call();
       setHasClaimedStarterPack(claimed as boolean);
 
-      // Get inventory
+      // Fetch player's current energy and gold balance
       const inventory = await contract.methods.getInventory(account).call() as any;
       const energyBalance = Number(inventory.energy);
-      const goldBalance = Number(inventory.gold);
       
       setEnergy(energyBalance);
-      setGold(goldBalance);
       
-      // Update parent component
-      onBalanceUpdate(energyBalance, goldBalance);
+      // Notify parent of balance update
+      onBalanceUpdate(energyBalance, Number(inventory.gold));
     } catch (error: any) {
       console.error('Error loading player data:', error);
     }
   };
 
+  /**
+   * Estimate gas cost for a specific contract method
+   * Returns formatted cost in ETH (e.g., "0.0015 ETH")
+   */
   const estimateGas = async (method: DungeonContractMethod) => {
     try {
       const gasEstimate = await method.estimateGas({ from: account });

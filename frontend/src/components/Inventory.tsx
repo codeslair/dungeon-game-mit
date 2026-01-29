@@ -26,14 +26,24 @@ interface DungeonContractInstance {
   };
 }
 
+/**
+ * Inventory Component
+ * Displays user's sword collection with rarity levels
+ * Fetches balances from smart contract for each sword type
+ */
 const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, refreshKey }) => {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Reload inventory when web3, account, or contract changes
   useEffect(() => {
     loadInventory();
   }, [web3, account, contractAddress, refreshKey]);
 
+  /**
+   * Load player's sword inventory from blockchain
+   * Queries balance for each sword type (common, rare, epic, legendary)
+   */
   const loadInventory = async () => {
     if (!web3 || !account || contractAddress === '0x0000000000000000000000000000000000000000') {
       setIsLoading(false);
@@ -46,7 +56,7 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
         contractAddress
       ) as unknown as DungeonContractInstance;
 
-      // Token IDs from the smart contract
+      // Define all sword types with their token IDs, icons, and rarity
       const tokenIds = [
         { id: 1001, name: 'Common Sword', icon: '🗡️', rarity: 'common' as const },
         { id: 1002, name: 'Rare Sword', icon: '⚔️', rarity: 'rare' as const },
@@ -60,10 +70,12 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
 
       const inventoryItems: InventoryItem[] = [];
 
+      // Query balance for each sword type
       for (const token of tokenIds) {
         const balance = await contract.methods.balanceOf(account, token.id).call();
         const quantity = Number(balance);
         
+        // Only add items that player owns (quantity > 0)
         if (quantity > 0) {
           inventoryItems.push({
             id: token.id,
@@ -83,6 +95,7 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
     }
   };
 
+  // Show error message if contract not initialized
   if (!web3 || contractAddress === '0x0000000000000000000000000000000000000000') {
     return (
       <div className="inventory-container">

@@ -13,9 +13,13 @@ interface WalletConnectProps {
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 }
 
+/**
+ * WalletConnect Component
+ * Manages MetaMask wallet connection and network switching
+ * Handles account/network change events and updates parent component
+ */
 const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, onNotification }) => {
   const [account, setAccount] = useState<string>('');
-  const [network, setNetwork] = useState<string>('');
   const [chainId, setChainId] = useState<number>(0);
   const [isConnecting, setIsConnecting] = useState(false);
   
@@ -31,6 +35,7 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     onNotificationRef.current = onNotification;
   }, [account, onConnect, onNotification]);
 
+  // Get human-readable network name from chainId
   const getNetworkName = useCallback((id: number): string => {
     const networks: { [key: number]: string } = {
       1: 'Ethereum Mainnet',
@@ -46,10 +51,13 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     return networks[id] || `Unknown Network (${id})`;
   }, []);
 
+  // Update local network name state
   const updateNetworkName = useCallback((chainId: number) => {
-    setNetwork(getNetworkName(chainId));
+    // Network name is computed on-demand, no need to store
+    getNetworkName(chainId);
   }, [getNetworkName]);
 
+  // Check if wallet is already connected on component mount
   const checkWalletConnection = useCallback(async () => {
     if (!window.ethereum) return;
 
@@ -77,40 +85,21 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     }
   }, [onConnect, onNotification, updateNetworkName]);
 
+  // Disconnect wallet and reset state
   const disconnectWallet = useCallback(() => {
     setAccount('');
-    setNetwork('');
     setChainId(0);
     onDisconnect();
     
     onNotification('Wallet disconnected', 'info');
   }, [onDisconnect, onNotification]);
 
-  const handleAccountsChanged = useCallback((accounts: string[]) => {
-    if (accounts.length === 0) {
-      disconnectWallet();
-    } else {
-      const newAccount = accounts[0];
-      setAccount(newAccount);
-      accountRef.current = newAccount;
-    }
-  }, [disconnectWallet]);
-
-  const handleChainChanged = useCallback((newChainId: string) => {
-    const chainIdNum = parseInt(newChainId, 16);
-    setChainId(chainIdNum);
-    updateNetworkName(chainIdNum);
-  }, [updateNetworkName]);
-
-  const handleDisconnect = useCallback(() => {
-    disconnectWallet();
-  }, [disconnectWallet]);
-
+  // Check wallet connection on component mount
   useEffect(() => {
     checkWalletConnection();
   }, []);
 
-  // Set up event listeners once on mount
+  // Set up MetaMask event listeners for account/network changes
   useEffect(() => {
     if (!window.ethereum) return;
     
@@ -120,33 +109,34 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     const onAccountsChanged = (accounts: string[]) => {
       console.log('accountsChanged event fired:', accounts);
       if (accounts.length === 0) {
+        // User disconnected wallet from MetaMask
         console.log('No accounts, disconnecting');
         setAccount('');
-        setNetwork('');
         setChainId(0);
         onDisconnect();
         onNotificationRef.current('Wallet disconnected', 'info');
       } else {
+        // User switched accounts
         const newAccount = accounts[0];
         console.log('New account selected:', newAccount);
         setAccount(newAccount);
         accountRef.current = newAccount;
         
         const web3 = new Web3(window.ethereum);
-        web3.eth.getChainId().then(id => {
-          const chainIdNumber = Number(id);
-          console.log('Account changed, calling onConnect with:', newAccount, chainIdNumber);
-          onConnectRef.current(newAccount, web3, chainIdNumber);
+        window.ethereum.request({ method: 'eth_chainId' }).then((chainIdHex: string) => {
+          const chainIdNum = parseInt(chainIdHex, 16);
+          console.log('Account changed, calling onConnect with:', newAccount, chainIdNum);
+          onConnectRef.current(newAccount, web3, chainIdNum);
         });
       }
     };
     
     const onChainChanged = (chainId: string) => {
+      // User switched network in MetaMask
       console.log('chainChanged event fired:', chainId);
       const chainIdNum = parseInt(chainId, 16);
       console.log('Parsed chainId:', chainIdNum);
       setChainId(chainIdNum);
-      setNetwork(getNetworkName(chainIdNum));
       onNotificationRef.current(`Network changed to ${getNetworkName(chainIdNum)}`, 'info');
       
       if (accountRef.current && window.ethereum) {
@@ -157,21 +147,22 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     };
     
     const onDisconnectEvent = () => {
+      // MetaMask wallet disconnected (rare event)
       console.log('disconnect event fired');
       setAccount('');
-      setNetwork('');
       setChainId(0);
       onDisconnect();
       onNotificationRef.current('Wallet disconnected', 'info');
     };
     
-    // Attach listeners
+    // Attach event listeners
     window.ethereum.on('accountsChanged', onAccountsChanged);
     window.ethereum.on('chainChanged', onChainChanged);
     window.ethereum.on('disconnect', onDisconnectEvent);
     
     console.log('Event listeners attached');
     
+    // Cleanup: remove listeners on unmount
     return () => {
       if (window.ethereum) {
         console.log('Removing MetaMask event listeners');
@@ -182,6 +173,7 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     };
   }, [getNetworkName, onDisconnect]);
 
+  // Request wallet connection from user
   const connectWallet = async () => {
     if (!window.ethereum) {
       onNotification('Please install MetaMask to connect your wallet', 'error');
@@ -191,13 +183,16 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     setIsConnecting(true);
     
     try {
+      // Request accounts from MetaMask
       const accounts = await window.ethereum.request({ 
         method: 'eth_requestAccounts' 
       });
       
       const web3 = new Web3(window.ethereum);
-      const chainId = await web3.eth.getChainId();
-      const chainIdNumber = Number(chainId);
+      const chainIdHex = await window.ethereum.request({ 
+        method: 'eth_chainId' 
+      });
+      const chainIdNumber = parseInt(chainIdHex, 16);
       
       setAccount(accounts[0]);
       setChainId(chainIdNumber);
@@ -215,17 +210,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
     } finally {
       setIsConnecting(false);
     }
-  };
-
-  const formatAddress = (addr: string) => {
-    return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
-  };
-
-  const getNetworkColorClass = () => {
-    if (chainId === 11155111) return 'network-badge-sepolia';
-    if (chainId === 1) return 'network-badge-ethereum';
-    if (chainId === 137) return 'network-badge-polygon';
-    return 'network-badge-default';
   };
 
   return (

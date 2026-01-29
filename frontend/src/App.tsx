@@ -9,25 +9,34 @@ import Trade from './components/Trade';
 import { useNotification } from './components/NotificationManager';
 import './App.scss';
 
+/**
+ * Main App Component
+ * Manages wallet connection, account state, and game data
+ * Coordinates between all game components (Dungeon, Crafting, Inventory, Trade)
+ */
 function App() {
+  // Wallet and account state
   const [account, setAccount] = useState<string>('');
   const [web3, setWeb3] = useState<Web3 | null>(null);
   const [chainId, setChainId] = useState<number>(0);
   const [balance, setBalance] = useState<string>('0');
+  
+  // Network state
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isWrongNetwork, setIsWrongNetwork] = useState<boolean>(false);
+  
+  // Game state
   const [energy, setEnergy] = useState<number>(0);
   const [gold, setGold] = useState<number>(0);
-  const [activeView, setActiveView] = useState<'dungeon' | 'crafting' | 'inventory'>('dungeon');
   const [inventoryRefreshKey, setInventoryRefreshKey] = useState<number>(0);
   
-  // Contract address - Deployed on Sepolia
+  // Smart contract address on Sepolia testnet
   const [contractAddress] = useState<string>('0x9eAD4A96C3cd8b5c0b9A41dF1F2C632Af5eCF1F7');
   
-  // Use custom notification system
+  // Notification system
   const { addNotification, NotificationContainer } = useNotification();
 
-  // Memoized function to load account balance
+  // Memoized function to load account ETH balance from blockchain
   const loadAccountBalance = useCallback(async () => {
     if (!account || !web3) return;
     
@@ -40,11 +49,12 @@ function App() {
     }
   }, [account, web3, addNotification]);
 
+  // Monitor account/network and validate Sepolia connection
   useEffect(() => {
     if (account && web3) {
       loadAccountBalance();
       
-      // Check if on Sepolia
+      // Verify user is on Sepolia testnet (chainId 11155111)
       const isSepolia = chainId === 11155111;
       setIsWrongNetwork(!isSepolia);
       
@@ -56,6 +66,7 @@ function App() {
     }
   }, [account, web3, chainId, loadAccountBalance]);
 
+  // Get human-readable network name from chainId
   const getNetworkName = useCallback((id: number): string => {
     const networks: { [key: number]: string } = {
       1: 'Ethereum Mainnet',
@@ -66,6 +77,7 @@ function App() {
     return networks[id] || `Network ${id}`;
   }, []);
 
+  // Handle wallet connection success
   const handleConnect = useCallback((accountAddress: string, web3Instance: Web3, chainIdNum: number) => {
     setAccount(accountAddress);
     setWeb3(web3Instance);
@@ -75,6 +87,7 @@ function App() {
     addNotification(`Connected to ${getNetworkName(chainIdNum)}`, 'success');
   }, [addNotification, getNetworkName]);
 
+  // Handle wallet disconnection
   const handleDisconnect = useCallback(() => {
     setAccount('');
     setWeb3(null);
@@ -84,55 +97,21 @@ function App() {
     setIsWrongNetwork(false);
   }, []);
 
+  // Forward notification from child components to notification system
   const handleNotification = useCallback((message: string, type: 'success' | 'error' | 'warning' | 'info') => {
     addNotification(message, type);
   }, [addNotification]);
 
+  // Handle energy/gold updates from Dungeon component
   const handleBalanceUpdate = useCallback((energyBalance: number, goldBalance: number) => {
     setEnergy(energyBalance);
     setGold(goldBalance);
   }, []);
 
+  // Trigger inventory refresh after crafting/trading
   const handleInventoryUpdate = useCallback(() => {
     setInventoryRefreshKey(prev => prev + 1);
   }, []);
-
-  const switchToSepolia = useCallback(async () => {
-    if (!window.ethereum) return;
-    
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0xaa36a7' }], // Sepolia chainId
-      });
-      addNotification('Switched to Sepolia network', 'success');
-    } catch (error: any) {
-      if (error.code === 4902) {
-        // Chain not added, let's add it
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [{
-              chainId: '0xaa36a7',
-              chainName: 'Sepolia Test Network',
-              nativeCurrency: {
-                name: 'Sepolia ETH',
-                symbol: 'ETH',
-                decimals: 18
-              },
-              rpcUrls: ['https://sepolia.infura.io/v3/'],
-              blockExplorerUrls: ['https://sepolia.etherscan.io']
-            }]
-          });
-          addNotification('Added Sepolia network to wallet', 'success');
-        } catch (addError) {
-          addNotification('Failed to add Sepolia network to wallet', 'error');
-        }
-      } else {
-        addNotification('Failed to switch network', 'error');
-      }
-    }
-  }, [addNotification]);
 
   return (
     <div className="app">
