@@ -3,59 +3,45 @@
 # ============================================
 node_modules/
 frontend/node_modules/
+package-lock.json
+yarn.lock
 
 # ============================================
 # Environment Variables
 # ============================================
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-frontend/.env
-frontend/.env.local
-frontend/.env.production.local
+.env.*.local
+frontend/.env*
 
 # ============================================
-# Hardhat Build Files
+# Build & Compilation Output
 # ============================================
+# Hardhat build files
 /cache
 /artifacts
 
-# ============================================
-# TypeChain Generated Files
-# ============================================
+# TypeChain generated types
 /typechain
 /typechain-types
 
+# Frontend build output
+frontend/build/
+frontend/dist/
+frontend/src/artifacts/
+
 # ============================================
-# Test Coverage
+# Deployments
+# ============================================
+# Local Hardhat node deployments
+ignition/deployments/chain-31337
+
+# ============================================
+# Test & Coverage
 # ============================================
 /coverage
 /coverage.json
 *.lcov
-
-# ============================================
-# Hardhat Ignition Deployments
-# ============================================
-# Local node deployments (chain-31337)
-ignition/deployments/chain-31337
-
-# ============================================
-# Frontend Build Output
-# ============================================
-frontend/build/
-frontend/dist/
-
-# ============================================
-# IDE & Editor Files
-# ============================================
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
 
 # ============================================
 # Logs
@@ -67,15 +53,20 @@ yarn-error.log*
 lerna-debug.log*
 
 # ============================================
-# OS Files
+# OS & Temporary Files
 # ============================================
 .DS_Store
 Thumbs.db
 Desktop.ini
-
-# ============================================
-# Temporary Files
-# ============================================
 *.tmp
 *.temp
 .cache/
+
+# ============================================
+# IDE & Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
