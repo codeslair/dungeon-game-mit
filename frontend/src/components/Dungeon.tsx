@@ -279,13 +279,25 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
 
     setIsLoading(true);
     try {
+      const inventory = await contract.methods.getInventory(account).call() as any;
+      const currentEnergy = Number(inventory.energy);
+      if (currentEnergy < 1) {
+        setEnergy(currentEnergy);
+        onNotification('Not enough energy to run dungeon', 'warning');
+        return;
+      }
       await contract.methods.runDungeon().send({ from: account });
       onNotification('Dungeon completed! Check your inventory for loot!', 'success');
       await loadPlayerData();
       onInventoryUpdate();
     } catch (error: any) {
       console.error('Error running dungeon:', error);
-      onNotification(error.message || 'Failed to run dungeon', 'error');
+      const message = error?.message || 'Failed to run dungeon';
+      if (message.toLowerCase().includes('insufficient energy')) {
+        onNotification('Not enough energy to run dungeon', 'warning');
+      } else {
+        onNotification(message, 'error');
+      }
     } finally {
       setIsLoading(false);
     }
