@@ -45,6 +45,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
   const [energy, setEnergy] = useState<number>(0);
   const [hasClaimedStarterPack, setHasClaimedStarterPack] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPlayerDataLoaded, setIsPlayerDataLoaded] = useState<boolean>(false);
   
   // Gas estimation state (for UI display)
   const [gasEstimates, setGasEstimates] = useState<{
@@ -86,6 +87,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
   // Load player data when contract is ready
   useEffect(() => {
     if (contract && account) {
+      setIsPlayerDataLoaded(false);
       loadPlayerData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,8 +115,10 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       
       // Notify parent of balance update
       onBalanceUpdate(energyBalance, Number(inventory.gold));
+      setIsPlayerDataLoaded(true);
     } catch (error: any) {
       console.error('Error loading player data:', error);
+      setIsPlayerDataLoaded(true);
     }
   };
 
@@ -135,7 +139,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
   };
 
   const updateGasEstimates = async () => {
-    if (!contract || !account) return;
+    if (!contract || !account || !isPlayerDataLoaded) return;
 
     try {
       // Fetch current gas price from network
@@ -162,16 +166,26 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       setTotalGas(gasPriceGwei.toFixed(2));
       
       // Update all button gas estimates
-      const starterPackGas = await estimateGas(contract.methods.claimStarterPack());
-      setGasEstimates(prev => ({ ...prev, starterPack: starterPackGas }));
+      if (hasClaimedStarterPack) {
+        setGasEstimates(prev => ({ ...prev, starterPack: 'N/A' }));
+      } else {
+        const starterPackGas = await estimateGas(contract.methods.claimStarterPack());
+        setGasEstimates(prev => ({ ...prev, starterPack: starterPackGas }));
+      }
 
       if (energy >= 1) {
         const runDungeonGas = await estimateGas(contract.methods.runDungeon());
         setGasEstimates(prev => ({ ...prev, runDungeon: runDungeonGas }));
+      } else {
+        setGasEstimates(prev => ({ ...prev, runDungeon: 'N/A' }));
       }
       
-      const timeRewardsGas = await estimateGas(contract.methods.claimTimeRewards());
-      setGasEstimates(prev => ({ ...prev, timeRewards: timeRewardsGas }));
+      if (canClaimTimeReward) {
+        const timeRewardsGas = await estimateGas(contract.methods.claimTimeRewards());
+        setGasEstimates(prev => ({ ...prev, timeRewards: timeRewardsGas }));
+      } else {
+        setGasEstimates(prev => ({ ...prev, timeRewards: 'N/A' }));
+      }
       
       // Update timestamp
       const now = new Date();
@@ -184,7 +198,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
   useEffect(() => {
     updateGasEstimates();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contract, account, energy]);
+  }, [contract, account, energy, hasClaimedStarterPack, canClaimTimeReward, isPlayerDataLoaded]);
 
   // Timer for Time Rewards (update every second)
   useEffect(() => {
@@ -232,6 +246,10 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
 
   const handleClaimStarterPack = async () => {
     if (!contract || !account) return;
+    if (hasClaimedStarterPack) {
+      onNotification('Starter pack already claimed for this wallet.', 'info');
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -241,7 +259,12 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       onInventoryUpdate();
     } catch (error: any) {
       console.error('Error claiming starter pack:', error);
-      onNotification(error.message || 'Failed to claim starter pack', 'error');
+      const message = error?.message || 'Failed to claim starter pack';
+      if (message.toLowerCase().includes('starter pack already claimed')) {
+        onNotification('Starter pack already claimed for this wallet.', 'info');
+      } else {
+        onNotification(message, 'error');
+      }
     } finally {
       setIsLoading(false);
     }

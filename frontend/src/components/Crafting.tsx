@@ -138,11 +138,27 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
     }
   };
 
+  const canCraftRare = balances.common >= 3;
+  const canCraftEpic = balances.rare >= 2;
+  const canCraftLegendary = balances.epic >= 5 && balances.gold >= 1000;
+
+  const canCraft =
+    selectedRecipe === 'rare'
+      ? canCraftRare
+      : selectedRecipe === 'epic'
+      ? canCraftEpic
+      : canCraftLegendary;
+
   /**
    * Update gas estimate when recipe or legendary variant selection changes
    */
   const updateGasEstimate = async () => {
     if (!contract || !account) return;
+
+    if (!canCraft || (selectedRecipe === 'legendary' && legendaryAlreadyCrafted.has(legendaryId))) {
+      setGasEstimate('N/A');
+      return;
+    }
 
     try {
       let method: DungeonContractMethod;
@@ -164,18 +180,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
   useEffect(() => {
     updateGasEstimate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [contract, account, selectedRecipe, legendaryId]);
-
-  const canCraftRare = balances.common >= 3;
-  const canCraftEpic = balances.rare >= 2;
-  const canCraftLegendary = balances.epic >= 5 && balances.gold >= 1000;
-
-  const canCraft =
-    selectedRecipe === 'rare'
-      ? canCraftRare
-      : selectedRecipe === 'epic'
-      ? canCraftEpic
-      : canCraftLegendary;
+  }, [contract, account, selectedRecipe, legendaryId, canCraft, legendaryAlreadyCrafted]);
 
   const handleCraft = async () => {
     if (!contract || !account) return;
@@ -205,7 +210,20 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
       onInventoryUpdate();
     } catch (error: any) {
       console.error('Error crafting item:', error);
-      onNotification(error.message || 'Crafting failed', 'error');
+      const message = error?.message || 'Crafting failed';
+      if (message.toLowerCase().includes('insufficient common swords')) {
+        onNotification('Need 3 Common Swords to craft a Rare Sword.', 'warning');
+      } else if (message.toLowerCase().includes('insufficient rare swords')) {
+        onNotification('Need 2 Rare Swords to craft an Epic Sword.', 'warning');
+      } else if (message.toLowerCase().includes('insufficient epic swords')) {
+        onNotification('Need 5 Epic Swords to craft a Legendary Sword.', 'warning');
+      } else if (message.toLowerCase().includes('insufficient gold')) {
+        onNotification('Need 1000 Gold to craft a Legendary Sword.', 'warning');
+      } else if (message.toLowerCase().includes('already crafted this legendary variant')) {
+        onNotification('You already crafted this legendary variant.', 'info');
+      } else {
+        onNotification(message, 'error');
+      }
     } finally {
       setIsLoading(false);
     }
