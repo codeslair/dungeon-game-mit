@@ -119,6 +119,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
     if (contract && account) {
       loadBalances();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account, refreshKey]);
 
   /**
@@ -162,6 +163,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
   // Update gas estimate when recipe selection changes
   useEffect(() => {
     updateGasEstimate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account, selectedRecipe, legendaryId]);
 
   const canCraftRare = balances.common >= 3;

@@ -20,7 +20,6 @@ interface WalletConnectProps {
  */
 const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, onNotification }) => {
   const [account, setAccount] = useState<string>('');
-  const [chainId, setChainId] = useState<number>(0);
   const [isConnecting, setIsConnecting] = useState(false);
   
   // Use refs to avoid stale closures in event listeners
@@ -76,7 +75,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
         const chainIdNumber = parseInt(chainIdHex, 16);
         
         setAccount(accounts[0]);
-        setChainId(chainIdNumber);
         updateNetworkName(chainIdNumber);
         onConnect(accounts[0], web3, chainIdNumber);
       }
@@ -88,7 +86,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
   // Disconnect wallet and reset state
   const disconnectWallet = useCallback(() => {
     setAccount('');
-    setChainId(0);
     onDisconnect();
     
     onNotification('Wallet disconnected', 'info');
@@ -97,8 +94,9 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
   // Check wallet connection on component mount
   useEffect(() => {
     checkWalletConnection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
   // Set up MetaMask event listeners for account/network changes
   useEffect(() => {
     if (!window.ethereum) return;
@@ -112,7 +110,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
         // User disconnected wallet from MetaMask
         console.log('No accounts, disconnecting');
         setAccount('');
-        setChainId(0);
         onDisconnect();
         onNotificationRef.current('Wallet disconnected', 'info');
       } else {
@@ -136,7 +133,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
       console.log('chainChanged event fired:', chainId);
       const chainIdNum = parseInt(chainId, 16);
       console.log('Parsed chainId:', chainIdNum);
-      setChainId(chainIdNum);
       onNotificationRef.current(`Network changed to ${getNetworkName(chainIdNum)}`, 'info');
       
       if (accountRef.current && window.ethereum) {
@@ -150,7 +146,6 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
       // MetaMask wallet disconnected (rare event)
       console.log('disconnect event fired');
       setAccount('');
-      setChainId(0);
       onDisconnect();
       onNotificationRef.current('Wallet disconnected', 'info');
     };
@@ -195,10 +190,8 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
       const chainIdNumber = parseInt(chainIdHex, 16);
       
       setAccount(accounts[0]);
-      setChainId(chainIdNumber);
       updateNetworkName(chainIdNumber);
       onConnect(accounts[0], web3, chainIdNumber);
-      
       onNotification('Wallet connected successfully!', 'success');
       
     } catch (error: any) {

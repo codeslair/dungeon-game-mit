@@ -38,6 +38,7 @@ const Inventory: React.FC<InventoryProps> = ({ web3, account, contractAddress, r
   // Reload inventory when web3, account, or contract changes
   useEffect(() => {
     loadInventory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [web3, account, contractAddress, refreshKey]);
 
   /**

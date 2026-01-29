@@ -88,6 +88,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
     if (contract && account) {
       loadPlayerData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account]);
 
   /**
@@ -182,6 +183,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
 
   useEffect(() => {
     updateGasEstimates();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account, energy]);
 
   // Timer for Time Rewards (update every second)
@@ -196,6 +198,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
 
       return () => clearInterval(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract, account]);
 
   const updateTimeRewardCountdown = async () => {
