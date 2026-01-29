@@ -192,7 +192,7 @@ function App() {
                 </div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">🪙</div>
+                <div className="stat-icon">✨</div>
                 <div className="stat-content">
                   <span className="stat-label">Gold:</span>
                   <span className="stat-value">{gold}</span>
