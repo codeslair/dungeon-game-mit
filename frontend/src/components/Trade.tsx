@@ -86,7 +86,7 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
 
     try {
       const contract = new web3.eth.Contract(
-        require('../artifacts/contracts/DungeonToken.sol/DungeonToken.json').abi,
+        require('../abis/DungeonToken.json').abi,
         contractAddress
       ) as any;
 
@@ -184,7 +184,7 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
 
     try {
       const contract = new web3.eth.Contract(
-        require('../artifacts/contracts/DungeonToken.sol/DungeonToken.json').abi,
+        require('../abis/DungeonToken.json').abi,
         contractAddress
       ) as any;
 
