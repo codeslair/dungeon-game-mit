@@ -176,7 +176,7 @@ dungeon-game/
 4. **Explore Dungeons**: Click "Enter Dungeon" to battle and earn gold + swords
 5. **Craft Weapons**: Use the crafting menu to upgrade your swords
 6. **Manage Resources**: Claim time rewards (1-2 energy, 5-10 gold) every 5 minutes
-7. **Trade Items**: Exchange items with other players (coming soon)
+7. **Trade Items**: Exchange items with other players
 
 ## 🔒 Security
 
