@@ -6,6 +6,7 @@ import Dungeon from './components/Dungeon';
 import Crafting from './components/Crafting';
 import Inventory from './components/Inventory';
 import Trade from './components/Trade';
+import Footer from './components/Footer';
 import { useNotification } from './components/NotificationManager';
 import './App.scss';
 
@@ -293,15 +294,7 @@ function App() {
         )}
       </main>
 
-      <footer className="app-footer">
-        <p>Dungeon Loot Game © 2026 | Built with React, Hardhat & Web3.js</p>
-        <p className="footer-links">
-          <a href="https://hardhat.org" target="_blank" rel="noopener noreferrer">Hardhat</a> • 
-          <a href="https://web3js.org" target="_blank" rel="noopener noreferrer">Web3.js</a> • 
-          <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a> • 
-          <a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer">TypeScript</a>
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -221,6 +221,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 For questions or support, please open an issue on GitHub.
 
+## 👥 Developers
+
+This project was developed as a group project at MIT by:
+
+- **Gabrielle Louis Valencia**
+- **Mark Amena**
+- **Mark Christian Yumul**
+
+**Professor**: Dr. ARCELY P NAPALIT
+
 ---
 
 **Built with ❤️ using React, Hardhat, and Web3.js**
