@@ -8,14 +8,17 @@ A blockchain-based dungeon game built on Ethereum where players can collect item
 
 ## ✨ Features
 
-- **🎒 Starter Pack**: New players receive 100 energy, 500 gold, and 1 common sword
+- **🎒 Starter Pack**: New players receive 10 energy, 100 gold, and 1 common sword
 - **⚔️ Dungeon Battles**: Explore dungeons to earn rewards (costs 1 energy per run)
+  - 70% chance: Common sword + 20-50 gold
+  - 20% chance: Rare sword + 20-50 gold
+  - 10% chance: Epic sword + 20-50 gold
 - **🔨 Crafting System**: 
   - Craft Rare Swords (3 common swords)
   - Craft Epic Swords (2 rare swords)
   - Craft Legendary Swords (5 epic swords + 1000 gold)
 - **💰 Resource Management**: Energy and gold as in-game currencies
-- **⏰ Time Rewards**: Claim 10 energy and 50 gold every 5 minutes
+- **⏰ Time Rewards**: Claim 1-2 energy and 5-10 gold every 5 minutes
 - **🔗 MetaMask Integration**: Connect your wallet to play
 - **🎨 Beautiful UI**: Modern, responsive design with SCSS styling
 
@@ -46,11 +49,11 @@ A blockchain-based dungeon game built on Ethereum where players can collect item
 
 ### Token Types
 - **1001-1005**: Common Swords (⚔️, 🗡️, 🔪, ⚒️, 🛡️)
-- **2001-2005**: Rare Swords (⚔️✨, 🗡️✨, 🔪✨, ⚒️✨, 🛡️✨)
-- **3001-3005**: Epic Swords (⚔️💎, 🗡️💎, 🔪💎, ⚒️💎, 🛡️💎)
-- **4001-4005**: Legendary Swords (⚔️👑, 🗡️👑, 🔪👑, ⚒️👑, 🛡️👑)
-- **9999**: Energy (⚡)
-- **8888**: Gold (💰)
+- **1002**: Rare Sword (⚔️✨)
+- **1003**: Epic Sword (⚔️💎)
+- **2001-2005**: Legendary Swords (⚔️👑, 🗡️👑, 🔪👑, ⚒️👑, 🛡️👑)
+- **1**: Energy (⚡)
+- **2**: Gold (💰)
 
 ## 🚀 Getting Started
 
@@ -169,10 +172,10 @@ dungeon-game/
 
 1. **Connect Wallet**: Click "Connect Wallet" and approve MetaMask connection
 2. **Switch to Sepolia**: The app will prompt you to switch to Sepolia testnet
-3. **Claim Starter Pack**: Get your initial resources (100 energy, 500 gold, 1 common sword)
-4. **Explore Dungeons**: Click "Enter Dungeon" to battle and earn gold
+3. **Claim Starter Pack**: Get your initial resources (10 energy, 100 gold, 1 common sword)
+4. **Explore Dungeons**: Click "Enter Dungeon" to battle and earn gold + swords
 5. **Craft Weapons**: Use the crafting menu to upgrade your swords
-6. **Manage Resources**: Claim time rewards every 5 minutes
+6. **Manage Resources**: Claim time rewards (1-2 energy, 5-10 gold) every 5 minutes
 7. **Trade Items**: Exchange items with other players (coming soon)
 
 ## 🔒 Security
