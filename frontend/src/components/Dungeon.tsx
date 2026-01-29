@@ -300,6 +300,15 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
 
     setIsLoading(true);
     try {
+      const now = Math.floor(Date.now() / 1000);
+      const lastClaim = await contract.methods.lastTimeRewardClaim(account).call() as string;
+      const lastClaimTimestamp = parseInt(lastClaim);
+      const cooldownDuration = 5 * 60;
+      if (now < lastClaimTimestamp + cooldownDuration) {
+        updateTimeRewardCountdown();
+        onNotification('Time reward cooldown not met. Please wait before claiming again.', 'warning');
+        return;
+      }
       // Call smart contract method - this will trigger MetaMask
       await contract.methods.claimTimeRewards().send({ from: account });
       onNotification('Time Rewards claimed! Check your inventory for Energy and Gold!', 'success');
@@ -310,7 +319,12 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       onInventoryUpdate();
     } catch (error: any) {
       console.error('Error claiming time rewards:', error);
-      onNotification(error.message || 'Failed to claim time rewards', 'error');
+      const message = error?.message || 'Failed to claim time rewards';
+      if (message.toLowerCase().includes('time reward cooldown not met')) {
+        onNotification('Time reward cooldown not met. Please wait before claiming again.', 'warning');
+      } else {
+        onNotification(message, 'error');
+      }
     } finally {
       setIsLoading(false);
     }
