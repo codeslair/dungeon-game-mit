@@ -24,6 +24,7 @@ frontend/.env*
 # TypeChain generated types
 /typechain
 /typechain-types
+frontend/src/types/
 
 # Frontend build output
 frontend/build/
