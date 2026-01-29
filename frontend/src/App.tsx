@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Web3 from 'web3';
+import { Web3 } from 'web3';
 import WalletConnect from './components/WalletConnect';
 import ErrorBox from './components/ErrorBox';
 import Dungeon from './components/Dungeon';

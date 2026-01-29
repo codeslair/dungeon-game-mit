@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Web3 from 'web3';
-import DungeonTokenABI from '../artifacts/contracts/DungeonToken.sol/DungeonToken.json';
+import { Web3 } from 'web3';
+import DungeonTokenABI from '../abis/DungeonToken.json';
 import './Dungeon.scss';
 
 interface DungeonProps {

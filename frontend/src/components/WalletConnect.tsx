@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Web3 from 'web3';
+import { Web3 } from 'web3';
 
 declare global {
   interface Window {
@@ -60,8 +60,12 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onConnect, onDisconnect, 
       
       if (accounts.length > 0) {
         const web3 = new Web3(window.ethereum);
-        const chainId = await web3.eth.getChainId();
-        const chainIdNumber = Number(chainId);
+        
+        // Query chainId directly from MetaMask
+        const chainIdHex = await window.ethereum.request({ 
+          method: 'eth_chainId' 
+        });
+        const chainIdNumber = parseInt(chainIdHex, 16);
         
         setAccount(accounts[0]);
         setChainId(chainIdNumber);
