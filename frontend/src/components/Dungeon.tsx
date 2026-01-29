@@ -273,7 +273,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
   if (!contract) {
     return (
       <div className="dungeon-container">
-        <p style={{ color: '#999', textAlign: 'center', padding: '2rem' }}>
+        <p className="no-contract-message">
           ⚠️ Please set contract address in App.tsx
         </p>
       </div>
