@@ -1,10 +1,8 @@
 .dungeon-container {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   border-radius: 16px;
-  padding: 18px;
+  padding: 20px;
   color: #fff;
-  max-width: 500px;
-  margin: 0 auto;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
   .dungeon-header {
@@ -260,31 +258,6 @@
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-      }
-    }
-  }
-}
-
-// Responsive design
-@media (max-width: 768px) {
-  .dungeon-container {
-    padding: 24px;
-
-    .dungeon-header {
-      h2 {
-        font-size: 28px;
-      }
-    }
-
-    .dungeon-actions {
-      grid-template-columns: 1fr;
-      
-      .action-cost {
-        grid-column: 1;
-        justify-content: flex-start;
-        padding-left: 8px;
-        margin-top: -8px;
-        margin-bottom: 4px;
       }
     }
   }

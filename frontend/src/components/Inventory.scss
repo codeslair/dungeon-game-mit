@@ -125,42 +125,4 @@
   }
 }
 
-// Responsive adjustments
-@media (max-width: 768px) {
-  .inventory-container {
-    padding: 24px;
 
-    .inventory-header {
-      h2 {
-        font-size: 24px;
-      }
-
-      .inventory-icon {
-        font-size: 28px;
-      }
-    }
-
-    .inventory-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 12px;
-    }
-
-    .inventory-item {
-      padding: 12px;
-
-      .item-icon {
-        font-size: 36px;
-      }
-
-      .item-info {
-        .item-name {
-          font-size: 12px;
-        }
-
-        .item-quantity {
-          font-size: 11px;
-        }
-      }
-    }
-  }
-}

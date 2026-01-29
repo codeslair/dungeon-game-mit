@@ -489,9 +489,10 @@ body {
 // Three Column Game Layout
 .game-columns {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 500px));
   gap: 1.1rem;
   margin-top: 0.4rem;
+  justify-content: center;
   
   @media (max-width: 1400px) {
     grid-template-columns: 1fr;
