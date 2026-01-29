@@ -208,7 +208,6 @@ npm run build
 
 - MetaMask must be installed and unlocked
 - Sepolia testnet required (mainnet not supported)
-- Browser refresh required after network change
 
 ## 📝 License
 
