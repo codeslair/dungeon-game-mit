@@ -1,26 +1,81 @@
-node_modules
-.env
+# ============================================
+# Dependencies
+# ============================================
+node_modules/
+frontend/node_modules/
 
-# Hardhat files
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+frontend/.env
+frontend/.env.local
+frontend/.env.production.local
+
+# ============================================
+# Hardhat Build Files
+# ============================================
 /cache
 /artifacts
 
-# TypeChain files
+# ============================================
+# TypeChain Generated Files
+# ============================================
 /typechain
 /typechain-types
 
-# solidity-coverage files
+# ============================================
+# Test Coverage
+# ============================================
 /coverage
 /coverage.json
+*.lcov
 
-# Hardhat Ignition default folder for deployments against a local node
+# ============================================
+# Hardhat Ignition Deployments
+# ============================================
+# Local node deployments (chain-31337)
 ignition/deployments/chain-31337
 
-.env
+# ============================================
+# Frontend Build Output
+# ============================================
+frontend/build/
+frontend/dist/
 
-.vscode
+# ============================================
+# IDE & Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
-# Frontend build output
-frontend/build
-frontend/.env.local
-frontend/.env.production.local
+# ============================================
+# Logs
+# ============================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+.cache/
