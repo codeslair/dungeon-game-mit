@@ -48,10 +48,10 @@ A blockchain-based dungeon game built on Ethereum where players can collect item
 - **Chain ID**: 11155111
 
 ### Token Types
-- **1001-1005**: Common Swords (⚔️, 🗡️, 🔪, ⚒️, 🛡️)
-- **1002**: Rare Sword (⚔️✨)
-- **1003**: Epic Sword (⚔️💎)
-- **2001-2005**: Legendary Swords (⚔️👑, 🗡️👑, 🔪👑, ⚒️👑, 🛡️👑)
+- **1001**: Common Sword (🗡️)
+- **1002**: Rare Sword (⚔️)
+- **1003**: Epic Sword (⚡🗡️)
+- **2001-2005**: Legendary Swords (🗡️✨, ⚔️✨, 🗡️🔥, ⚔️⚡, 🗡️💎)
 - **1**: Energy (⚡)
 - **2**: Gold (💰)
 
