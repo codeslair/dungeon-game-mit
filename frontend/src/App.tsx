@@ -118,7 +118,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="logo">
-          <h1>🏰 Dungeon Loot Game</h1>
+          <h1>Dungeon Loot Game</h1>
           <p className="subtitle">Blockchain Gaming Platform</p>
         </div>
         <div className="header-right">
