@@ -10,6 +10,7 @@ interface DungeonProps {
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
   onBalanceUpdate: (energy: number, gold: number) => void;
   onInventoryUpdate: () => void;
+  onEthBalanceUpdate: () => void;
 }
 
 interface DungeonContractMethod {
@@ -37,7 +38,7 @@ interface DungeonContractInstance {
  * - Run dungeons to earn gold and swords
  * - Claim passive time rewards every 24 hours
  */
-const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNotification, onBalanceUpdate, onInventoryUpdate }) => {
+const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNotification, onBalanceUpdate, onInventoryUpdate, onEthBalanceUpdate }) => {
   // Contract and wallet state
   const [contract, setContract] = useState<DungeonContractInstance | null>(null);
   
@@ -257,6 +258,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       onNotification('Starter Pack claimed successfully! You received 10 Energy, 100 Gold, and 1 Common Sword!', 'success');
       await loadPlayerData();
       onInventoryUpdate();
+      onEthBalanceUpdate();
     } catch (error: any) {
       console.error('Error claiming starter pack:', error);
       const message = error?.message || 'Failed to claim starter pack';
@@ -290,6 +292,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       onNotification('Dungeon completed! Check your inventory for loot!', 'success');
       await loadPlayerData();
       onInventoryUpdate();
+      onEthBalanceUpdate();
     } catch (error: any) {
       console.error('Error running dungeon:', error);
       const message = error?.message || 'Failed to run dungeon';
@@ -329,6 +332,7 @@ const Dungeon: React.FC<DungeonProps> = ({ web3, account, contractAddress, onNot
       updateTimeRewardCountdown();
       await loadPlayerData();
       onInventoryUpdate();
+      onEthBalanceUpdate();
     } catch (error: any) {
       console.error('Error claiming time rewards:', error);
       const message = error?.message || 'Failed to claim time rewards';

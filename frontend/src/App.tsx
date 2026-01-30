@@ -246,6 +246,7 @@ function App() {
                       onNotification={handleNotification}
                       onBalanceUpdate={handleBalanceUpdate}
                       onInventoryUpdate={handleInventoryUpdate}
+                      onEthBalanceUpdate={loadAccountBalance}
                     />
                   )}
 
@@ -258,6 +259,7 @@ function App() {
                       onNotification={handleNotification}
                       onInventoryUpdate={handleInventoryUpdate}
                       refreshKey={inventoryRefreshKey}
+                      onEthBalanceUpdate={loadAccountBalance}
                     />
                   )}
 
@@ -278,6 +280,7 @@ function App() {
                       account={account}
                       contractAddress={contractAddress}
                       onNotification={handleNotification}
+                      onEthBalanceUpdate={loadAccountBalance}
                     />
                   )}
                 </div>

@@ -10,6 +10,7 @@ interface CraftingProps {
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
   onInventoryUpdate: () => void;
   refreshKey: number;
+  onEthBalanceUpdate: () => void;
 }
 
 interface DungeonContractMethod {
@@ -47,7 +48,7 @@ const TOKEN_IDS = {
  * - Epic: 2 rare swords → 1 epic sword
  * - Legendary: 5 epic swords + 1000 gold → 1 legendary sword (5 variants)
  */
-const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onNotification, onInventoryUpdate, refreshKey }) => {
+const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onNotification, onInventoryUpdate, refreshKey, onEthBalanceUpdate }) => {
   // Contract and UI state
   const [contract, setContract] = useState<DungeonContractInstance | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeType>('rare');
@@ -208,6 +209,7 @@ const Crafting: React.FC<CraftingProps> = ({ web3, account, contractAddress, onN
 
       await loadBalances();
       onInventoryUpdate();
+      onEthBalanceUpdate();
     } catch (error: any) {
       console.error('Error crafting item:', error);
       const message = error?.message || 'Crafting failed';

@@ -7,6 +7,7 @@ interface TradeProps {
   account: string;
   contractAddress: string;
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
+  onEthBalanceUpdate: () => void;
 }
 
 interface InventoryItem {
@@ -35,7 +36,7 @@ const SWORD_TYPES: { [key: number]: { name: string; emoji: string } } = {
   2005: { name: 'Legendary Sword 5', emoji: '👑' },
 };
 
-const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification }) => {
+const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification, onEthBalanceUpdate }) => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<{ [key: number]: SelectedItem }>({});
   const [recipientAddress, setRecipientAddress] = useState<string>('');
@@ -208,6 +209,8 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
         `Successfully traded ${itemSummary} to ${recipientAddress.substring(0, 6)}...`,
         'success'
       );
+
+      onEthBalanceUpdate();
 
       // Reset form
       setRecipientAddress('');
