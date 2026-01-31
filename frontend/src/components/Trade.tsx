@@ -8,6 +8,7 @@ interface TradeProps {
   contractAddress: string;
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
   onEthBalanceUpdate: () => void;
+  refreshKey?: number;
 }
 
 interface InventoryItem {
@@ -36,7 +37,7 @@ const SWORD_TYPES: { [key: number]: { name: string; emoji: string } } = {
   2005: { name: 'Legendary Sword 5', emoji: '👑' },
 };
 
-const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification, onEthBalanceUpdate }) => {
+const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification, onEthBalanceUpdate, refreshKey }) => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<{ [key: number]: SelectedItem }>({});
   const [recipientAddress, setRecipientAddress] = useState<string>('');
@@ -118,10 +119,10 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
     estimateTradeGas();
   }, [estimateTradeGas]);
 
-  // Load inventory on mount
+  // Load inventory on mount and when refreshKey changes
   useEffect(() => {
     loadInventory();
-  }, [loadInventory]);
+  }, [loadInventory, refreshKey]);
 
   // Validate recipient address
   const isValidAddress = (address: string): boolean => {

@@ -281,6 +281,7 @@ function App() {
                       contractAddress={contractAddress}
                       onNotification={handleNotification}
                       onEthBalanceUpdate={loadAccountBalance}
+                      refreshKey={inventoryRefreshKey}
                     />
                   )}
                 </div>
