@@ -8,6 +8,7 @@ interface TradeProps {
   contractAddress: string;
   onNotification: (message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
   onEthBalanceUpdate: () => void;
+  onInventoryUpdate?: () => void;
   refreshKey?: number;
 }
 
@@ -37,7 +38,7 @@ const SWORD_TYPES: { [key: number]: { name: string; emoji: string } } = {
   2005: { name: 'Legendary Sword 5', emoji: '👑' },
 };
 
-const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification, onEthBalanceUpdate, refreshKey }) => {
+const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotification, onEthBalanceUpdate, onInventoryUpdate, refreshKey }) => {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<{ [key: number]: SelectedItem }>({});
   const [recipientAddress, setRecipientAddress] = useState<string>('');
@@ -212,6 +213,7 @@ const Trade: React.FC<TradeProps> = ({ web3, account, contractAddress, onNotific
       );
 
       onEthBalanceUpdate();
+      onInventoryUpdate?.();
 
       // Reset form
       setRecipientAddress('');
